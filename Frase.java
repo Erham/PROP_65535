@@ -17,6 +17,7 @@ public class Frase {
     
     public Frase() {
         l_par = new ArrayList();
+        frasestring = "";
     }
     
     public Frase(Paraula p) {
@@ -51,12 +52,18 @@ public class Frase {
         }
     }
     
-    public int longitud() {
+    public int longitud() {     
         return frasestring.length();
+    }
+    
+    public int nombre_paraules() {
+        return l_par.size();
     }
     
     public void afegir(Paraula p) {
         l_par.add(p);
+        frasestring += " ";
+        frasestring = frasestring.concat(p.get_p());
     }
     
     
@@ -72,7 +79,7 @@ public class Frase {
     }
     
     public void FraseToString() { //Procés anterior a la inversa. (Frases -> String)
-        for(int i = 0; i < l_par.size(); i++) {
+        for(int i = 0; i < l_par.size(); ++i) {
             frasestring += l_par.get(i).toString();
         }
     }
