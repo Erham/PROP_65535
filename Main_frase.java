@@ -39,7 +39,7 @@ public class Main_frase {
             System.out.println("1. Afegeix una paraula a la frase");
             System.out.println("2. Funcio set i imprimir");
             System.out.println("3. Dividir la frase en paraules i imprimir llista");
-            System.out.println("4. Retornem el nombre de paraules de la frase");
+            System.out.println("4. Retornem la longitud de la frase");
             System.out.println("5. Funcio get i imprimir en llista");
             
             String opt = lector.nextLine();
@@ -62,7 +62,7 @@ public class Main_frase {
                         f.imprimir_llista_paraules(); break;
                         
                 case 4: f.dividir();
-                        int len = f.nombre_paraules();
+                        int len = f.longitud();
                         System.out.println(len); break;
                         
                 case 5: List<Paraula> ls;
@@ -73,7 +73,7 @@ public class Main_frase {
                             pa.imprimir();
                         }break;                   
                 
-                default: System.out.println("Escriu un numero del 1 al 5."); break;
+                default: System.out.println("Error: Els numeros han de ser entre 1 i 5."); break;
 
             }
         }

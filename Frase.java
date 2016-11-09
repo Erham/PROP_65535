@@ -56,10 +56,6 @@ public class Frase {
         return frasestring.length();
     }
     
-    public int nombre_paraules() {
-        return l_par.size();
-    }
-    
     public void afegir(Paraula p) {
         l_par.add(p);
         frasestring += " ";
@@ -78,6 +74,7 @@ public class Frase {
         }      
     }
     
+    //No Cal la funcio FraseToString
     public void FraseToString() { //Procés anterior a la inversa. (Frases -> String)
         for(int i = 0; i < l_par.size(); ++i) {
             frasestring += l_par.get(i).toString();

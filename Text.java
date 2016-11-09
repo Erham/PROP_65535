@@ -69,33 +69,51 @@ public class Text {
     
     public void dividir() { //Divideix el text en frases.
         boolean findefrase = false;
+        boolean b = false;
         String aux = "";
-        for(int i = 0; i < textstring.length(); ++i) {
-            if(findefrase == true) {
-                findefrase = false;
-                aux = "";
-            }
-            else {
-                if(textstring.charAt(i) == '.' || textstring.charAt(i) == '!' || textstring.charAt(i) == '?') {
-                    if(textstring.charAt(i) == '.') {
-                        while(textstring.charAt(i) == '.' && i < textstring.length()) {
-                            aux += textstring.charAt(i);
-                            ++i;
+        int i = 0;
+        if(textstring.length() > 0){
+            while(i < textstring.length()) {
+                if(findefrase == true) {
+                    findefrase = false;
+                    aux = "";
+                    aux += textstring.charAt(i);
+                }
+                else {
+                    if(textstring.charAt(i) == '.' || textstring.charAt(i) == '!' || textstring.charAt(i) == '?') {
+                        if(textstring.charAt(i) == '.') {
+                            while(textstring.charAt(i) == '.' && (i) < textstring.length()) {
+                                ++i;
+                                b = true;
+                            }
                         }
-                    }
-                    findefrase = true;  
-                } 
-                aux += textstring.charAt(i);
-                Frase auxf = new Frase();
-                auxf.set_frasestring(aux);
-                l_frase.add(auxf);
+                        Frase auxf = new Frase();
+                        while(aux.startsWith(" "))
+                        {
+                            aux = aux.substring(1);
+                        }
+                        auxf.set_frasestring(aux);
+                        l_frase.add(auxf);
+                        findefrase = true;  
+                    } 
+
+                    aux += textstring.charAt(i);
+
+                }
+                if(b == false) ++i;
+                else b = false;
             }
-        }
-    }
-    
-    public void ConvertEnString() { //Procés anterior a la inversa. Frases -> String
-        for(int i = 0; i < l_frase.size(); ++i) {
-            textstring += l_frase.get(i).toString();
+            int l = textstring.length()-1;
+            if(textstring.charAt(l) != '.' && textstring.charAt(l) != '!' && textstring.charAt(l) != '?')
+            {
+            Frase ax = new Frase();
+            if(aux.startsWith(" "))
+                        {
+                            aux = aux.substring(1);
+                        }
+            ax.set_frasestring(aux);
+            l_frase.add(ax);
+            }
         }
     }
     
@@ -108,12 +126,14 @@ public class Text {
     public int count() throws IOException {
     //Extreu les stop words i retorna la mida.
         String s = textstring;
-        int mida = 1;        
+        int mida;        
+        mida = 0;
+        if("".equals(s)) return mida;
         String[] partes = s.split("[[ ]*|[,]*|[.]*|[...]*|[:]*|[?!]*|[-]*|[!]*|[?]*|[+]*]+");
         for(String ss : partes) {
             Paraula aux = new Paraula();
             aux.set_p(ss);
-            if(!aux.is_stop_word()) {
+            if(!aux.is_stop_word() && !"".equals(ss)) {
                 ++mida;
             }
         }  
