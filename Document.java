@@ -166,6 +166,7 @@ public class Document {
                 String definitivo = pt2[2];
                 definitivo = correccion(definitivo);          
                 titol.set_frasestring(definitivo);
+                titol.dividir();
                 titfound = true;
             }
             if(pa[0].equals(aut) && autfound == false) {
@@ -181,6 +182,7 @@ public class Document {
                 }
                 //Fi de la part de majúscules
                 autor.set_frasestring(replaced);                
+                autor.dividir();
                 autfound = true;
             }
             if(ptm[0].equals(tem) && temfound == false) {
@@ -194,7 +196,9 @@ public class Document {
                 String[] pc2 = aux.split("\"articleBody\": ");
                 String definitivo = pc2[1].substring(1, pc2[1].length()-1);
                 definitivo = correccion(definitivo);
-                contingut.set_textstring(definitivo);                
+                contingut.set_textstring(definitivo);
+                contingut.dividir();
+                contingut.crear_divisions();
                 confound = true;
             }
             todofound = titfound & autfound & temfound & confound;
