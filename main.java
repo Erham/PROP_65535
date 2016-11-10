@@ -25,7 +25,7 @@ public class main {
     public static void main(String[] args) throws FileNotFoundException, IOException {
         
         System.out.println("Benvingut al Gestor de Documents.");
-        System.out.println("Escull una ordre. (Afegir/Esborrar/Consultar)");
+        System.out.println("Escull una ordre. (Afegir/Esborrar/Imprimir/Consultar/Sortir)");
         Cjt_Documents cjt = new Cjt_Documents();
         Scanner lector = new Scanner(System.in);
         String option = lector.nextLine();
@@ -54,10 +54,18 @@ public class main {
                 }
                 else System.out.println("ERROR: Comanda incorrecta.");
             }
+            else if(option.equalsIgnoreCase("Imprimir")) {
+                System.out.println("Introdueix l'ID del document a imprimir.");
+                int num = lector.nextInt();
+                if(cjt.existeix_id(num)) {
+                    Map<Integer, Document> c = cjt.get_cjt();
+                    c.get(num).imprimir();
+                }
+                else System.out.println("ERROR: El document no existeix.");
+            }
             else if(option.equalsIgnoreCase("Consultar")) {
                 
             }
-            else System.out.println("ERROR: Comanda incorrecta.");
             option = lector.nextLine();
         }
    

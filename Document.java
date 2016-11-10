@@ -131,10 +131,6 @@ public class Document {
         contingut.imprimir();
     }
     
-    public void update_ev() {
-        
-    }
-    
     //--------------------------------------------------------
     
     public void set_all_data(String f) throws IOException, FileNotFoundException {
@@ -205,9 +201,7 @@ public class Document {
         }
     }
     
-    //DUBTE, quan s'ha de obtenir frases i paraules? Si és instantani caldrà aixó:
-    
-    public void crear_divisions() { 
+    public void crear_divisions() { //SÓLO PARA CUANDO NO SEA NECESARIO LEER UN ARCHIVO
         contingut.dividir();
         contingut.crear_divisions();
     }
