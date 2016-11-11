@@ -18,11 +18,16 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 
 **FRASE:** (frase.jar)
 - public Frase()
-- public Frase(Paraula P)
-- public
-
-
-
+- public Frase(Paraula p)
+- public List<Paraula> get_lp()
+- public String get_frasestring()
+- public void set_lpar(List<Paraula> l_par)
+- public void set_frasestring(String frasestring)
+- public void imprimir()
+- public void imprimir_llista_paraules()
+- public int longitud()
+- public void afegir(Paraula p)
+- public void dividir()
 
 **PARAULA:** (paraula.jar)
 - public Paraula()
