@@ -13,8 +13,42 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 - public void
 
 **DOCUMENTS:** (document.jar)
+- private String correction(String s)
+- public Document()
+- public Document(Frase titol, Frase autor, Paraula tema)
+- public Frase get_titol()
+- public Frase get_autor()
+- public Paraula get_tema()
+- public Text get_contingut()
+- public int get_id()
+- public void set_titol(Frase titol)
+- public void set_autor(Frase autor)
+- public void set_tema(Paraula tema)
+- public void set_contingut(Text contingut)
+- public void set_titol_String(String s)
+- public void set_autor_String(String s)
+- public void set_contingut_string(String s)
+- public void set_tema_String(String s)
+- public void imprimir()
+- public void set_all_data(String f)
+- public void crear_divisions()
+
+
+
 
 **TEXT:** (text.jar)
+- public Text()
+- public Text(Frase p)
+- public List<Frase> get_lf()
+- public String get_textstring()
+- public void set_lf(List<Frase> lf)
+- public void set_textstring(String fin)
+- public void afegir(Frase p)
+- public void imprimir()
+- public void imprimir_llista_frases()
+- public void dividir()
+- public void crear_divisions()
+- public int count()
 
 **FRASE:** (frase.jar)
 - public Frase()
