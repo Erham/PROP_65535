@@ -5,10 +5,6 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 
 **IMPORTANT 2: Si es vol crear un nou document .html, ha de seguir EXACTAMENT el mateix model (localització dels camps "títol", "autor", "contingut" i "tema" que els documents descarregats. En cas contrari, el gestor no sabrà identificar correctament els camps del document.
 
-**IMPORTANT 3: El document de les stop_words, "empty.cat", ha d'estar a la MATEIXA carpeta que els drivers executats.
-
-**IMPORTANT 4: L'arxiu de l'espai vectorial ha d'estar OBLIGATÒRIAMENT en una subcarpeta anomenada "arxius" dins la localització de l'execució.
-
 * Aquesta és la llista de classes amb el seu corresponent driver, i totes les funcions disponibles, indicant-se com es poden provar i alguns detalls a tenir en compte.
 
 **CJT_DOCUMENTS:** (driver_cjtdoc.jar)
@@ -95,82 +91,85 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 ============================================================
 
 **FITXER:**
- - public Fitxer() << Es prova en el menú 1.1
- - public static String path() << 1.1
- - protected BufferedWriter obrir_fitxer_w() << 1.3   
- - private BufferedReader obrir_fitxer_r() << 1.2
- - public String get_text() << 1.2
- - public void set_text(String t) << 1.2
- - public boolean creat() << 1.1
- - public boolean modificat() << 1.3
- - public void set_nom(String t) << 1.1
- - public void llegir() << 1.2
- - public void guardar() << 1.3
- - public void buidar_text() << 1.4
- - protected void crear(File a) << 1.1
- - public void eliminar() << 1.5
+ - public Fitxer()                               << Es pot provar al menú 1.1
+ - public static String path()                   << Es pot provar al menú 1.1
+ - protected BufferedWriter obrir_fitxer_w()     << Es pot provar al menú 1.3   
+ - private BufferedReader obrir_fitxer_r()       << Es pot provar al menú 1.2
+ - public String get_text()                      << Es pot provar al menú 1.2
+ - public void set_text(String t)                << Es pot provar al menú 1.2
+ - public boolean creat()                        << Es pot provar al menú 1.1
+ - public boolean modificat()                    << Es pot provar al menú 1.3
+ - public void set_nom(String t)                 << Es pot provar al menú 1.1
+ - public void llegir()                          << Es pot provar al menú 1.2
+ - public void guardar()                         << Es pot provar al menú 1.3
+ - public void buidar_text()                     << Es pot provar al menú 1.4
+ - protected void crear(File a)                  << Es pot provar al menú 1.1
+ - public void eliminar()                        << Es pot provar al menú 1.5
 
 **ARXIU:** 
- - public Arxiu() << 2.1
- - public Arxiu(int id) << 2.3
- - public Arxiu(int id, String titol_1, String autor_1, String tema_1) << 2.2
- - private void ini() << 2.1
- - public String get_titol() << 2.1
- - public String get_autor() << 2.1
- - public String get_tema() << 2.1
- - public int get_id() << 2.1
- - public void set_titol(String t) << 2.1
- - public void set_autor(String a) << 2.1
- - public void set_tema(String t) << 2.1
- - public void set_id(int id) << 2.1
+ - public Arxiu()                                << Es pot provar al menú 2.1
+ - public Arxiu(int id)                          << Es pot provar al menú 2.3
+ - public Arxiu(int id, String titol_1,          << Es pot provar al menú 2.2
+                String autor_1, String tema_1)     
+ - private void ini()                            << Es pot provar al menú 2.1
+ - public String get_titol()                     << Es pot provar al menú 2.1
+ - public String get_autor()                     << Es pot provar al menú 2.1
+ - public String get_tema()                      << Es pot provar al menú 2.1
+ - public int get_id()                           << Es pot provar al menú 2.1
+ - public void set_titol(String t)               << Es pot provar al menú 2.1
+ - public void set_autor(String a)               << Es pot provar al menú 2.1
+ - public void set_tema(String t)                << Es pot provar al menú 2.1
+ - public void set_id(int id)                    << Es pot provar al menú 2.1
  
  **REGISTRE:** 
- - public Registre() << 3.1
- - private void ini() << 3.1
- - public void afegir_arxiu() << 3.2
+ - public Registre()                             << Es pot provar al menú3.1
+ - private void ini()                            << Es pot provar al menú3.1
+ - public void afegir_arxiu()                    << Es pot provar al menú3.2
 
 
 **ESPAI_VECTORIAL:**
- - public Espai_vectorial() << 4.1
- - private void ini() << 4.1
- - public int get_dimensio() << 4.1
- - public void set_dimensio(int dim) << 4.1
- - private void omplir_map() << 4.2
- - public void esborrar_map() << 4.4
- - public void imprimir_map() << 4.2
- - public void afegir_al_espai(String doc) << 4.3
- - public void extreure_del_espai(String doc) << 4.3
- - private void modificar_map(String doc, boolean mode) << 4.3 (es veu pel funcionament de afegir i extreure)
- - private void omplir_list() << 4.2
- - public void imprimir_list() << 4.2
- - private Vector calcular_vector(String doc, boolean mode) << 4.5 (es veu pel funcionament de  vector_boolea i vector_enter)
- - public Vector vector_boolea(String doc) << 4.5
- - public Vector vector_enter(String doc) << 4.5
- - public void guardar() << 4.2
+ - public Espai_vectorial()                                    << Es pot provar al menú 4.1
+ - private void ini()                                          << Es pot provar al menú 4.1
+ - public int get_dimensio()                                   << Es pot provar al menú 4.1
+ - public void set_dimensio(int dim)                           << Es pot provar al menú 4.1
+ - private void omplir_map()                                   << Es pot provar al menú 4.2
+ - public void esborrar_map()                                  << Es pot provar al menú 4.4
+ - public void imprimir_map()                                  << Es pot provar al menú 4.2
+ - public void afegir_al_espai(String doc)                     << Es pot provar al menú 4.3
+ - public void extreure_del_espai(String doc)                  << Es pot provar al menú 4.3
+ - private void modificar_map(String doc, boolean mode)        << Es pot provar al menú 4.3
+ - private void omplir_list()                                  << Es pot provar al menú 4.2
+ - public void imprimir_list()                                 << Es pot provar al menú 4.2
+ - private Vector calcular_vector(String doc, boolean mode)    << Es pot provar al menú 4.5 (es veu pel funcionament de  vector_boolea i vector_enter)
+ - public Vector vector_boolea(String doc)                     << Es pot provar al menú 4.5
+ - public Vector vector_enter(String doc)                      << Es pot provar al menú 4.5
+ - public void guardar()                                       << Es pot provar al menú 4.2
 
 **COMPARADOR:**
- - public Comparador() << 5.1
- - public void assignar_vector_boolea(Espai_vectorial espai, String doc) << 5.1
- - public void assignar_vector_enter(Espai_vectorial espai, String doc) << 5.2 
- - public double distancia_boolea(Vector v2) << 5.3
- - public double cosinus_boolea(Vector v2) << 5.3
- - public double distancia_enter(Vector v2) << 5.3
- - private double distancia(Vector v2, int mode) << 5.3 (es veu pel funcionament de distancia_boolea, cosinus boolea...)
+ - public Comparador()                                                         << Es pot provar al menú 5.1
+ - public void assignar_vector_boolea(Espai_vectorial espai, String doc)       << Es pot provar al menú 5.1
+ - public void assignar_vector_enter(Espai_vectorial espai, String doc)        << Es pot provar al menú 5.2 
+ - public double distancia_boolea(Vector v2)                                   << Es pot provar al menú 5.3
+ - public double cosinus_boolea(Vector v2)                                     << Es pot provar al menú 5.3
+ - public double distancia_enter(Vector v2)                                    << Es pot provar al menú 5.3
+ - private double distancia(Vector v2, int mode)                               << Es pot provar al menú 5.3 (es veu pel funcionament de distancia_boolea, cosinus boolea...)
 
 **VECTOR:**
- - public Vector() << 4.5
- - public void set_mida(int m) << 4.5
- - public int get_dimensio() << 4.5
- - public double[] get_elements() << 5.1
- - public void modificar_element(int index, double valor) << 4.5
- - public double get_element_i(int index) << 4.5
- - public void omplir_vector(String vec) << 5.3
- - public void normalitzar() << 5.3
- - public double modul() << 5.3
- - public void dividir() << 5.3
- - static Vector restar(Vector v1, Vector v2) << 5.3
- - static Vector clonar(Vector v) zz 5.3
+ - public Vector()                                                << Es pot provar al menú 4.5
+ - public void set_mida(int m)                                    << Es pot provar al menú 4.5
+ - public int get_dimensio()                                      << Es pot provar al menú 4.5
+ - public double[] get_elements()                                 << Es pot provar al menú 5.1
+ - public void modificar_element(int index, double valor)         << Es pot provar al menú 4.5
+ - public double get_element_i(int index)                         << Es pot provar al menú 4.5
+ - public void omplir_vector(String vec)                          << Es pot provar al menú 5.3
+ - public void normalitzar()                                      << Es pot provar al menú 5.3
+ - public double modul()                                          << Es pot provar al menú 5.3
+ - public void dividir()                                          << Es pot provar al menú 5.3
+ - static Vector restar(Vector v1, Vector v2)                     << Es pot provar al menú 5.3
+ - static Vector clonar(Vector v)                                 << Es pot provar al menú 5.3
 
-
+------
+PD: La funcio modificar_map es prova amb l'us de afegir_al_espai i extreure_del_espai, que la criden
+PD2: La funcio calcular_vector
 
 
