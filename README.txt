@@ -10,47 +10,48 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 **CJT_DOCUMENTS:** (cjt_documents.jar)
 - private void recalcular_maxid()
 - private int trobar_id_disponible()
-- public Cjt_Documents(): Es pot provar directament en qualsevol funció. (Afegir, Modificar...)
-- public Cjt_Documents(Document d): Es pot provar directament en qualsevol funció. (Afegir, Modificar...)
-- public Map<Integer, Document> get_cjt()
-- public int get_maxid()
-- public void set_cjt(Map<Integer, Document> cjt)
-- public void set_maxid(int max_id)
-- public int tamany()
-- public void afegir()
-- public void esborrar(int key)
-- public void esborrarDoc(String tit, String aut)
-- public void modificar(int id)
-- public void modificarDoc(String tit, String aut)
-- public void cerca_Autor(String autor)
-- public void cerca_Prefix(String prefix)
-- public void cerca_Document(String titol, String autor)
-- public void cerca_Semblants(Document d, int k)
-- public boolean existeix(Document d)
-- public boolean existeix_id(int id)
-- public int assignar_id_fitxer()
-- public void omplir_cjt(String s)
+- public Cjt_Documents():                           <<Es pot provar directament en qualsevol funció. (Afegir, Modificar...)>>
+- public Cjt_Documents(Document d):                 <<Es pot provar directament en qualsevol funció. (Afegir, Modificar...)>>
+- public Map<Integer, Document> get_cjt():          <<Cal posar la comanda 'Altres' per provar-la>>
+- public int get_maxid():                           <<Cal posar la comanda 'Altres' per provar-la>>
+- public void set_cjt(Map<Integer, Document> cjt):  <<Cal posar la comanda 'Altres' per provar-la>>
+- public void set_maxid(int max_id):                <<Cal posar la comanda 'Altres' per provar-la>>
+- public int tamany():                              <<Cal posar la comanda 'Altres' per provar-la>>
+- public void afegir():                             <<Cal posar la comanda 'Afegir' per provar-la>>
+- public void esborrar(int key):                    <<Cal posar la comanda 'Esborrar' per provar-la>>
+- public void esborrarDoc(String tit, String aut):  <<Cal posar la comanda 'Esborrar' per provar-la>>
+- public void modificar(int id):                    <<Cal posar la comanda 'Modificar' per provar-la>>
+- public void modificarDoc(String tit, String aut): <<Cal posar la comanda 'Modificar' per provar-la>>
+- public void cerca_Autor(String autor):            <<Cal posar la comanda 'Consultar' per provar-la>>
+- public void cerca_Prefix(String prefix):          <<Cal posar la comanda 'Consultar' per provar-la>>
+- public void cerca_Document(String titol, String autor): <<Cal posar la comanda 'Consultar' per provar-la>>
+- public void cerca_Semblants(Document d, int k):   <<Cal posar la comanda 'Consultar' per provar-la>>
+- public boolean existeix(Document d):             <<El seu funcionament ja es demostra quan s'esborra o s'afegeix un document.>>
+- public boolean existeix_id(int id):              <<El seu funcionament ja es demostra quan s'esborra o s'afegeix un document.>>
+- public int assignar_id_fitxer():                 <<El seu funcionament ja es demostra quan s'esborra o s'afegeix un document.>>
+- public void omplir_cjt(String s):                <<Cal posar la comanda 'Altres' per provar-la.>>
 
 **DOCUMENTS:** (document.jar)
-- private String correction(String s)
-- public Document()
-- public Document(Frase titol, Frase autor, Paraula tema)
-- public Frase get_titol()
-- public Frase get_autor()
-- public Paraula get_tema()
-- public Text get_contingut()
-- public int get_id()
-- public void set_titol(Frase titol)
-- public void set_autor(Frase autor)
-- public void set_tema(Paraula tema)
-- public void set_contingut(Text contingut)
-- public void set_titol_String(String s)
-- public void set_autor_String(String s)
-- public void set_contingut_string(String s)
-- public void set_tema_String(String s)
-- public void imprimir()
-- public void set_all_data(String f)
-- public void crear_divisions()
+- private String correction(String s):                     <<Quan es proven documents descarregats, el fet de que en imprimir els atributs no contingui símbols extranys és senyal de que la funció correcció és correcta.
+
+- public Document():                                       <<Es prova a qualsevol funció. (Afegir, Modificar...)>>
+- public Document(Frase titol, Frase autor, Paraula tema): <<Es prova a qualsevol funció. (Afegir, Modificar...)>>
+- public Frase get_titol():                                <<Es prova introduint '1'>>
+- public Frase get_autor():                                <<Es prova introduint '1'>>
+- public Paraula get_tema():                               <<Es prova introduint '1'>>
+- public Text get_contingut():                             <<Es prova introduint '1'>>
+- public int get_id():                                     <<Es prova introduint '1'>>
+- public void set_titol(Frase titol):                      
+- public void set_autor(Frase autor):                     
+- public void set_tema(Paraula tema):                      
+- public void set_contingut(Text contingut):               <<Es prova introduint '0'>>
+- public void set_titol_String(String s):                  <<Es prova introduint '0'>>
+- public void set_autor_String(String s):                  <<Es prova introduint '0'>>
+- public void set_contingut_string(String s):              <<Es prova introduint '0'>>
+- public void set_tema_String(String s):                   <<Es prova introduint '0'>>
+- public void imprimir():                                  <<Es prova introduint '2'>>
+- public void set_all_data(String f):                      <<Es prova introduint '3'>>
+- public void crear_divisions():                           <<Es prova introduint '4'>>
 
 **TEXT:** (text.jar)
 - public Text()
