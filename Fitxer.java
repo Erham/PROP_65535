@@ -26,9 +26,9 @@ public class Fitxer {
     //  Retorna el path de la carpeta del projecte
     public static String path() {
         
-        // System.out.println(System.getProperty("user.dir"));
+        // System.out.println(System.getProperty("user.dir") + "/arxius");
         
-        return "/home/adria/Documentos/proves"; 
+        return System.getProperty("user.dir") + "/arxius"; 
     }
     
     //  Retorna el BufferedWriter del Fitxer (null en cas que no existeixi el .txt)

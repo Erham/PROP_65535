@@ -48,7 +48,7 @@ public class Espai_vectorial extends Fitxer {
         nom = "espai_vectorial";
         paraules = new HashMap<>();
         llista = new ArrayList<>();
-        dimensio = 10;
+        dimensio = 20;
         modificacio = false;
     }
     /*    === === ===  ESCOLLIR LA DIMENSIÓ  === === ===    */
@@ -63,7 +63,7 @@ public class Espai_vectorial extends Fitxer {
     
     //  Omple el map "paraules" agafant tots els paraula_frequencia del String "text"
     //  Si "text" és buit ho comunica
-    private void omplir_map() {
+    public void omplir_map() {
         int size = (this.text).length();  
         if (size > 0) {        // executar només si el String és > 0, si no, vol dir que a l'espai no hi havia paraules (encara)
             (this.paraules).clear();
@@ -72,11 +72,14 @@ public class Espai_vectorial extends Fitxer {
             int end = 0;
             String paraula;
             Integer freq;
+            
             while (end >= 0) {  // iterar mentre no haguem arribat al final del String
+                
                 end = t.indexOf(' ', start);    // posicio del 1r espai;
                 paraula = t.substring(start, end);  // paraula = text[start // end - 1]
                 start = end + 1;
                 end = t.indexOf(' ', start);    // posicio del 2n espai
+                
                 if (end >= 0) {
                     freq = Integer.parseInt(t.substring(start,end));    // frequencia = text[start // end - 1]
                     start = end + 1;
@@ -84,8 +87,10 @@ public class Espai_vectorial extends Fitxer {
                 else {
                     freq = Integer.parseInt(t.substring(start,size));   // si l'end era = -1 -> agafem l'últim número amb size
                 }
+                
                 // ara ja tenim la paraula amb la seva frequencia (paraula , freq)
                 (this.paraules).putIfAbsent(paraula,freq);  // afegim la (paraula,freq) al map
+                
             }
         }
         else {
@@ -167,7 +172,7 @@ public class Espai_vectorial extends Fitxer {
     
     //  Buida "llista". Omple "llista" amb els valors de "paraules"
     //  Ordena "llista" de més gran a més petit segons la frequencia de cada paraula
-    private void omplir_list() {
+    public void omplir_list() {
         (this.llista).clear();
         Iterator it = (this.paraules).entrySet().iterator();
         Map.Entry<String,Integer> element;
@@ -190,6 +195,8 @@ public class Espai_vectorial extends Fitxer {
     private Vector calcular_vector(String doc, boolean mode) {
         int size = doc.length();
         
+       
+        
         if (size > 0) { // executar només si "doc" no és buit
             Vector vec = new Vector();
             int start = 0;
@@ -204,6 +211,9 @@ public class Espai_vectorial extends Fitxer {
                 }
                 else {
                     paraula = doc.substring(start, size);   // paraula = doc[última paraula]
+                     System.out.println("--------------------------------------------");
+        System.out.println(paraula);
+        System.out.println("--------------------------------------------");
                 }
                 // ja tenim la paraula a "paraula"
                 // mode = cert -> boolea  /  mode = fals -> enter
@@ -247,6 +257,7 @@ public class Espai_vectorial extends Fitxer {
     //  On les paraules 1..n son totes les presents a "paraules" amb la seva corresponent frequencia d'aparicio (el value)
     //  Basicament es una funcio per guardar el contingut de l'objecte en espai_vectorial.txt
     //  (espai_vectorial.txt ha d'estar creat)
+    
     @Override
     public void guardar() throws IOException {
         if (this.modificacio) {

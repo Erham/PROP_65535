@@ -13,6 +13,11 @@ public class Comparador {
         vector_assignat = false;
     }
     
+    public Vector get_vec() {
+        System.out.println("OK");
+        return vec;
+    }
+    
     //  Assigna un vector boolea a "vec"
     //  ("doc" ha de correspondre a un vector valid, i "espai" ha de ser valid)
     public void assignar_vector_boolea(Espai_vectorial espai, String doc) {

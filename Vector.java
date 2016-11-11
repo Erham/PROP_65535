@@ -8,7 +8,7 @@ public class Vector {
     
     //  Crea una instancia de Vector, amb tots els termes de "element[]" a 0.0
     public Vector() {
-        this.dimensio = 10; // !!! !!! !!! !!! !!! !!! !!! !!! //
+        this.dimensio = 20;
         mida = 0;
         element = new double[dimensio];
         

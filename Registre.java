@@ -43,7 +43,7 @@ public class Registre extends Fitxer {
         
         to_add = to_add + Integer.toString(nou.get_id()) + "  " + nou.get_titol() +
                  "  " + nou.get_autor() + "  " + nou.get_tema();
-        /* ALERTA !!! !!! !!! if ((this.text).length() > 0)*/ this.text += "\n";  // afegim un salt de línia pel seguent document
+        /* ALERTA !!! !!! !!! if ((this.text).length() > 0)*/// this.text += "\n";  // afegim un salt de línia pel seguent document
         this.text = (this.text).concat(to_add); // afegim els parametres de l'arxiu al text
         this.modificacio = true;          // acabem de modificar-lo
     }
