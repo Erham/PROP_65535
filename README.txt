@@ -5,6 +5,10 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 
 **IMPORTANT 2: Si es vol crear un nou document .html, ha de seguir EXACTAMENT el mateix model (localització dels camps "títol", "autor", "contingut" i "tema" que els documents descarregats. En cas contrari, el gestor no sabrà identificar correctament els camps del document.
 
+**IMPORTANT 3: El document de les stop_words, "empty.cat", ha d'estar a la MATEIXA carpeta que els drivers executats.
+
+**IMPORTANT 4: L'arxiu de l'espai vectorial ha d'estar OBLIGATÒRIAMENT en una subcarpeta anomenada "arxius" dins la localització de l'execució.
+
 * Aquesta és la llista de classes amb el seu corresponent driver, i totes les funcions disponibles, indicant-se com es poden provar i alguns detalls a tenir en compte.
 
 **CJT_DOCUMENTS:** (driver_cjtdoc.jar)
