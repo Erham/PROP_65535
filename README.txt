@@ -136,8 +136,6 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 - public Vector vector_enter(String doc)
 - public void guardar()
 
-
-
 **COMPARADOR:** (comparador.jar)
 - public Comparador()
 - public void assignar_vector_boolea(Espai_vectorial espai, String doc)
@@ -146,8 +144,6 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 - public double cosinus_boolea(Vector v2)
 - public double distancia_enter(Vector v2)
 - private double distancia(Vector v2, int mode)
-
-
 
 **VECTOR:** (vector.jar)
 - public Vector()
@@ -162,7 +158,6 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 - public void dividir()
 - static Vector restar(Vector v1, Vector v2)
 - static Vector clonar(Vector v)
-
 
 **REGISTRE:** (registre.jar)
 - public Registre()
