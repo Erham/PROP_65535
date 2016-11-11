@@ -52,9 +52,6 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 - public void set_all_data(String f)
 - public void crear_divisions()
 
-
-
-
 **TEXT:** (text.jar)
 - public Text()
 - public Text(Frase p)
@@ -91,8 +88,35 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 - public boolean is_stop_word()
 
 **FITXER:** (fitxer.jar)
+- public Fitxer()
+- public static String path()
+- protected BufferedWriter obrir_fitxer_w()
+- private BufferedReader obrir_fitxer_r()
+- public String get_text()
+- public void set_text(String t)
+- public boolean creat()
+- public boolean modificat()
+- public void set_nom(String t)
+- public void llegir()
+- public void guardar()
+- public void buidar_text()
+- protected void crear(File a)
+- public void eliminar()
 
 **ARXIU:** (arxiu.jar)
+- public Arxiu()
+- public Arxiu(int id)
+- public Arxiu(int id, String titol_1, String autor_1, String tema_1)
+- private void ini()
+- public String get_titol()
+- public String get_autor()
+- public String get_tema()
+- public int get_id()
+- public void set_titol(String t)
+- public void set_autor(String a)
+- public void set_tema(String t)
+- public void set_id(int id)
+
 
 **ESPAI_VECTORIAL:** (espai_vectorial.jar)
 
