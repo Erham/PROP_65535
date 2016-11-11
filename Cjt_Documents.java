@@ -257,9 +257,9 @@ public class Cjt_Documents {
         
         //SIUSPLAU COMPLETEU AIXÒ, SI SABEU COM EXPLICAR BREUMENT CADA MÈTODE.
         System.out.println("De l'1 al 3, quin mètode vols?");
-        System.out.println("1. ***COMPLETAR***");
-        System.out.println("2. ***COMPLETAR***");
-        System.out.println("3. ***COMPLETAR***");
+        System.out.println("1. Distància vectorial entre dos documents (Espai vectorial de booleans)");
+        System.out.println("2. Cosinus entre els vectors de dos documents (Espai vectorial de booleans))");
+        System.out.println("3. Distància vectorial entre dos documents (Espai vectorial d'enters)");
         
         Scanner lector = new Scanner(System.in);
         int num = lector.nextInt();
