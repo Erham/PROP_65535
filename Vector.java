@@ -2,12 +2,13 @@ package fitxers;
 
 public class Vector {
     
-    private int dimensio;  // dimensió del vector , a llegir d'algun lloc ??
+    private int dimensio;  // dimensio del vector
     private double element[];
     private int mida;   // mida del document
     
+    //  Crea una instancia de Vector, amb tots els termes de "element[]" a 0.0
     public Vector() {
-        this.dimensio = 4; // LLEGIR D'ALGUN LLOC!!!!!! FITXER??????? 10 PERQUÈ SÍ!!! PERÒ CAL VARIAR-HO!!!!
+        this.dimensio = 10; // !!! !!! !!! !!! !!! !!! !!! !!! //
         mida = 0;
         element = new double[dimensio];
         
@@ -28,17 +29,21 @@ public class Vector {
         return this.element;
     }
     
+    //  Modifica "element[index]" per donar-li com a valor "valor"
+    //  ("index" ha d'estar entre 0 i "dimensio" - 1)
     public void modificar_element(int index, double valor) {
         element[index] = valor;
     }
     
+    //  Retorna "element[index]" ("index" ha d'estar entre 0 i "dimensio" - 1)
     public double get_element_i(int index) {
         return element[index];
     }
     
     //  omple l'array "element[]" amb els termes del String "vec"
-    //  "vec" no pot tenir mes termes que "dimensio"
-    public void omplir_vector(String vec) {     // vec es un string de l'estil "1.11 2.22 3.33 4.44 5.55 ..." de "dimensio" termes
+    //  "vec" no pot tenir mes ni menys termes que "dimensio"
+    //  "vec" ha de ser de l'estil "1.11 2.22 3.33 4.44 5.55 ..." amb "dimensio" nombre de termes
+    public void omplir_vector(String vec) {
         int start = 0;
         int end = 0;
         for (int i = 0; i < this.dimensio; i++) {   // per cada posicio (dimensio):
@@ -50,17 +55,19 @@ public class Vector {
             start = end + 1;
         }
     }
-    //  THROW UNA EXCEPCIÓ PER SI EL STRING NO ÉS PROU LLARG!!!! ERROR DE DIMENSIÓ!!!!!
     
-    // normalitza el vector perquè tingui mòdul = 1.0;
+    //  Normalitza el Vector perquè tingui modul = 1.0;
+    //  "element[]" ha de ser ple de doubles, si no no es pot cridar a la funcio, es una precondicio
     public void normalitzar() {
-        double mod = this.modul();  // agafem el mòdul
-        for (int i = 0; i < this.dimensio; i++) {
-            this.element[i] = this.element[i] / mod;
+        double mod = this.modul();  // agafem el modul
+        if (mod != 0.0) {
+            for (int i = 0; i < this.dimensio; i++) {
+                this.element[i] = this.element[i] / mod;
+            }
         }
     }
     
-    //  retorna el mòdul del vector
+    //  Retorna el modul del Vector
     public double modul() {
         double mod2 = 0.0;
         for (int i = 0; i < this.dimensio; i++) {
@@ -70,6 +77,8 @@ public class Vector {
         return Math.sqrt(mod2);
     }
     
+    //  Divideix els termes de "element[]" per la "mida" del Document al qual pertany
+    //  "mida" no pot ser 0;
     public void dividir() {
         for (int i = 0; i < this.dimensio; i++) {
             
@@ -77,6 +86,7 @@ public class Vector {
         }
     }
     
+    //  Retorna la resta v1 - v2
     static Vector restar(Vector v1, Vector v2) {
         Vector aux = new Vector();
         for (int i = 0; i < v1.dimensio; i++) {
@@ -85,7 +95,7 @@ public class Vector {
         return aux;
     }
     
-    //  Retorna una còpia del vector "v" (??? ??? ???)
+    //  Retorna una copia del vector "v"
     static Vector clonar(Vector v) {
         Vector aux = new Vector();
         
@@ -96,16 +106,4 @@ public class Vector {
         return aux;
     }
     
-    // FALTA LA LECTURA DE LA DIMENSIÓ !!! !!! !!!
-    
 }
-
-/*
-
-Vector a = new Vector();
-        System.out.println(Arrays.toString(a.element));
-
-string.indexOf(char c) -> comença per defecte a string[0]
-string.indexOf(char c, int index) -> comença a string[index] INCLÒS (!)
-
-*/
