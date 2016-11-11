@@ -119,9 +119,33 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 
 
 **ESPAI_VECTORIAL:** (espai_vectorial.jar)
+- public Espai_vectorial()
+- private void ini()
+- public int get_dimensio()
+- public void set_dimensio(int dim)
+- private void omplir_map()
+- public void esborrar_map()
+- public void imprimir_map()
+- public void afegir_al_espai(String doc)
+- public void extreure_del_espai(String doc)
+- private void modificar_map(String doc, boolean mode)
+- private void omplir_list()
+- public void imprimir_list()
+- private Vector calcular_vector(String doc, boolean mode)
+- public Vector vector_boolea(String doc)
+- public Vector vector_enter(String doc)
+- public void guardar()
+
+
 
 **COMPARADOR:** (comparador.jar)
 
+
+
 **VECTOR:** (vector.jar)
 
+
+
 **REGISTRE:** (registre.jar)
+
+
