@@ -7,7 +7,7 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 
 * Aquesta és la llista de classes amb el seu corresponent driver, i totes les funcions disponibles, indicant-se com es poden provar i alguns detalls a tenir en compte.
 
-**CJT_DOCUMENTS:** (cjt_documents.jar)
+**CJT_DOCUMENTS:** (driver_cjtdoc.jar)
 - private void recalcular_maxid()
 - private int trobar_id_disponible()
 - public Cjt_Documents():                           <<Es pot provar directament en qualsevol funció. (Afegir, Modificar...)>>
@@ -31,7 +31,7 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 - public int assignar_id_fitxer():                 <<El seu funcionament ja es demostra quan s'esborra o s'afegeix un document.>>
 - public void omplir_cjt(String s):                <<Cal posar la comanda 'Altres' per provar-la.>>
 
-**DOCUMENTS:** (document.jar)
+**DOCUMENTS:** (driver_doc.jar)
 - private String correction(String s):                     <<Quan es proven documents descarregats, el fet de que en imprimir els atributs no contingui símbols extranys és senyal de que la funció correcció és correcta.
 
 - public Document():                                       <<Es prova a qualsevol funció. (Afegir, Modificar...)>>
@@ -53,7 +53,7 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 - public void set_all_data(String f):                      <<Es prova introduint '3'>>
 - public void crear_divisions():                           <<Es prova introduint '4'>>
 
-**TEXT:** (text.jar)
+**TEXT:** (driver_text.jar)
 - public Text()
 - public Text(Frase p)
 - public List<Frase> get_lf()
@@ -67,7 +67,7 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 - public void crear_divisions()
 - public int count()
 
-**FRASE:** (frase.jar)
+**FRASE:** (driver_frase.jar)
 - public Frase()
 - public Frase(Paraula p)
 - public List<Paraula> get_lp()
@@ -80,7 +80,7 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 - public void afegir(Paraula p)
 - public void dividir()
 
-**PARAULA:** (paraula.jar)
+**PARAULA:** (driver_paraula.jar)
 - public Paraula()
 - public Paraula(String P)
 - public String get_p()
@@ -88,7 +88,7 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 - public void imprimir()
 - public boolean is_stop_word()
 
-**FITXER:** (fitxer.jar)
+**FITXER:**
 - public Fitxer()
 - public static String path()
 - protected BufferedWriter obrir_fitxer_w()
@@ -104,7 +104,7 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 - protected void crear(File a)
 - public void eliminar()
 
-**ARXIU:** (arxiu.jar)
+**ARXIU:** 
 - public Arxiu()
 - public Arxiu(int id)
 - public Arxiu(int id, String titol_1, String autor_1, String tema_1)
@@ -119,7 +119,7 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 - public void set_id(int id)
 
 
-**ESPAI_VECTORIAL:** (espai_vectorial.jar)
+**ESPAI_VECTORIAL:**
 - public Espai_vectorial()
 - private void ini()
 - public int get_dimensio()
@@ -137,7 +137,7 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 - public Vector vector_enter(String doc)
 - public void guardar()
 
-**COMPARADOR:** (comparador.jar)
+**COMPARADOR:**
 - public Comparador()
 - public void assignar_vector_boolea(Espai_vectorial espai, String doc)
 - public void assignar_vector_enter(Espai_vectorial espai, String doc)
@@ -146,7 +146,7 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 - public double distancia_enter(Vector v2)
 - private double distancia(Vector v2, int mode)
 
-**VECTOR:** (vector.jar)
+**VECTOR:**
 - public Vector()
 - public void set_mida(int m)
 - public int get_dimensio()
@@ -160,7 +160,7 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 - static Vector restar(Vector v1, Vector v2)
 - static Vector clonar(Vector v)
 
-**REGISTRE:** (registre.jar)
+**REGISTRE:** 
 - public Registre()
 - private void ini()
 - public void afegir_arxiu()
