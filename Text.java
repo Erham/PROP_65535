@@ -82,7 +82,7 @@ public class Text {
                 else {
                     if(textstring.charAt(i) == '.' || textstring.charAt(i) == '!' || textstring.charAt(i) == '?') {
                         if(textstring.charAt(i) == '.') {
-                            while(textstring.charAt(i) == '.' && (i) < textstring.length()) {
+                            while(textstring.charAt(i) == '.' && (i) < textstring.length()-1) {
                                 ++i;
                                 b = true;
                             }
@@ -121,6 +121,21 @@ public class Text {
         for(int i = 0; i < l_frase.size(); ++i) {
             l_frase.get(i).dividir();
         }
+    }
+    
+    public String netejear() throws IOException {
+        String s = textstring;
+        String nou = "";
+        String[] partes = s.split("[[ ]*|[,]*|[.]*|[...]*|[:]*|[?!]*|[-]*|[!]*|[?]*|[+]*]+");
+        for(String ss : partes) {
+            Paraula aux = new Paraula();
+            aux.set_p(ss);
+            if(!aux.is_stop_word()) {
+                nou += ss + " ";
+            }
+        }  
+        
+        return nou;
     }
     
     public int count() throws IOException {

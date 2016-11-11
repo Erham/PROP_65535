@@ -9,6 +9,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
+import fitxers.Comparador;
+import fitxers.Espai_vectorial;
+import fitxers.Vector;
+import java.io.IOException;
+import java.util.TreeMap;
 /**
  *
  * @author Sergio, Marc i Adrià
@@ -251,10 +256,7 @@ public class Cjt_Documents {
         }
     }
     
-    public void cerca_Semblants(Document d, int k) {
-        String contenido = d.get_contingut().get_textstring();
-        
-        //SIUSPLAU COMPLETEU AIXÒ, SI SABEU COM EXPLICAR BREUMENT CADA MÈTODE.
+    public void cerca_Semblants(Document d, int k) throws IOException {
         System.out.println("De l'1 al 3, quin mètode vols?");
         System.out.println("1. Distància vectorial entre dos documents (Espai vectorial de booleans)");
         System.out.println("2. Cosinus entre els vectors de dos documents (Espai vectorial de booleans))");
@@ -262,18 +264,93 @@ public class Cjt_Documents {
         
         Scanner lector = new Scanner(System.in);
         int num = lector.nextInt();
-        switch (num) { //FALTA COMPLETAR CADA CAS... SORRY
+        switch (num) {
             case 1:
+                Comparador c = new Comparador();
+                Espai_vectorial ev = new Espai_vectorial();
+                String s = d.get_contingut().netejear();
+                
+                c.assignar_vector_boolea(ev, s);
+                Map<String, Double> suu = new TreeMap();
+                for(int i = 0; i < max_id; ++i) {
+                    double dist;
+                    Vector vd = new Vector();
+                    if(cjt.get(i) != null) {
+                        String str = cjt.get(i).get_contingut().netejear();
+                        vd.omplir_vector(str);
+                        
+                        dist = c.distancia_boolea(vd);
+                        String s2 = String.valueOf(i);
+                        suu.put(s2, dist);
+                    }
+                }
+                int temp = 0;
+                for(Map.Entry<String, Double> entry : suu.entrySet()) {
+                    if(temp < k) {
+                        cjt.get(Integer.parseInt(entry.getKey()));
+                        ++temp;
+                    }
+                }
                 break;
             case 2:
+                Comparador ce = new Comparador();
+                Espai_vectorial evec = new Espai_vectorial();
+                String si = d.get_contingut().netejear();
+                
+                ce.assignar_vector_boolea(evec, si);
+                Map<String, Double> suuu = new TreeMap();
+                for(int i = 0; i < max_id; ++i) {
+                    double dist;
+                    Vector vd = new Vector();
+                    if(cjt.get(i) != null) {
+                        String str = cjt.get(i).get_contingut().netejear();
+                        vd.omplir_vector(str);
+                        
+                        dist = ce.cosinus_boolea(vd);
+                        String s2 = String.valueOf(i);
+                        suuu.put(s2, dist);
+                    }
+                }
+                int tempo = 0;
+                for(Map.Entry<String, Double> entry : suuu.entrySet()) {
+                    if(tempo < k) {
+                        cjt.get(Integer.parseInt(entry.getKey()));
+                        ++tempo;
+                    }
+                }
+                
                 break;
             case 3:
+                
+                Comparador comp = new Comparador();
+                Espai_vectorial evee = new Espai_vectorial();
+                String str2 = d.get_contingut().netejear();
+                
+                comp.assignar_vector_boolea(evee, str2);
+                Map<String, Double> suuuu = new TreeMap();
+                for(int i = 0; i < max_id; ++i) {
+                    double dist;
+                    Vector vd = new Vector();
+                    if(cjt.get(i) != null) {
+                        String str = cjt.get(i).get_contingut().netejear();
+                        vd.omplir_vector(str);
+                        
+                        dist = comp.distancia_enter(vd);
+                        String s2 = String.valueOf(i);
+                        suuuu.put(s2, dist);
+                    }
+                }
+                int tem = 0;
+                for(Map.Entry<String, Double> entry : suuuu.entrySet()) {
+                    if(tem < k) {
+                        cjt.get(Integer.parseInt(entry.getKey()));
+                        ++tem;
+                    }
+                }
                 break;
             default: System.out.println("ERROR: Ha de ser un nº entre 1 i 3!");
                 break;
         }
-        
-        //DESPRÉS DE LO DE DALT CALDRÀ RETORNAR LA LLISTA DE K DOCUMENTS SEMBLANTS A D.
         
         System.out.println("--Operació realitzada amb èxit--");
     }
