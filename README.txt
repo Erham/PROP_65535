@@ -139,13 +139,34 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 
 
 **COMPARADOR:** (comparador.jar)
+- public Comparador()
+- public void assignar_vector_boolea(Espai_vectorial espai, String doc)
+- public void assignar_vector_enter(Espai_vectorial espai, String doc)
+- public double distancia_boolea(Vector v2)
+- public double cosinus_boolea(Vector v2)
+- public double distancia_enter(Vector v2)
+- private double distancia(Vector v2, int mode)
 
 
 
 **VECTOR:** (vector.jar)
-
+- public Vector()
+- public void set_mida(int m)
+- public int get_dimensio()
+- public double[] get_elements()
+- public void modificar_element(int index, double valor)
+- public double get_element_i(int index)
+- public void omplir_vector(String vec)
+- public void normalitzar()
+- public double modul()
+- public void dividir()
+- static Vector restar(Vector v1, Vector v2)
+- static Vector clonar(Vector v)
 
 
 **REGISTRE:** (registre.jar)
+- public Registre()
+- private void ini()
+- public void afegir_arxiu()
 
 
