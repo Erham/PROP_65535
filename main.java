@@ -6,6 +6,7 @@
 package gestordocuments;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Map;
 
@@ -21,8 +22,8 @@ public class main {
      */
     public static void main(String[] args) throws FileNotFoundException, IOException {
         
-        System.out.println("Benvingut al Gestor de Documents. ('Sortir' per acabar)");
-        System.out.println("Escull una ordre. (Afegir/Esborrar/Modificar/Imprimir/Consultar)");
+        System.out.println("Driver de la col·lecció de Documents. ('Sortir' per acabar)");
+        System.out.println("Escull una ordre. (Afegir/Esborrar/Modificar/Imprimir/Consultar/Altres)");
         Cjt_Documents cjt = new Cjt_Documents();
         Scanner lector = new Scanner(System.in);
         String option = lector.nextLine();
@@ -112,7 +113,7 @@ public class main {
                             String tt = lector.nextLine();
                             String at = lector.nextLine();
                             cjt.cerca_Document(tt, at);
-                            System.out.println("Operació realitzada amb èxit.");                            
+                            System.out.println("--Operació realitzada amb èxit--");                            
                             break;
                         case 4:
                             System.out.println("Escull entre atributs o ID:");
@@ -128,7 +129,7 @@ public class main {
                                 }
                                 Document d = cjt.get_cjt().get(ide);
                                 cjt.cerca_Semblants(d, k);
-                                System.out.println("Operació realitzada correctament.");
+                                System.out.println("--Operació realitzada amb èxit--");
                             }
                             else if(opc.equalsIgnoreCase("atributs")) {
                                 System.out.println("Introdueix el títol i l'autor del document:");
@@ -147,7 +148,6 @@ public class main {
                                 int k = lector.nextInt();           
                                 
                                 cjt.cerca_Semblants(doc, k);
-                                System.out.println("Operació realitzada correctament.");
                             }
                             else System.out.println("ERROR: Comanda incorrecta.");
                             break;
@@ -156,6 +156,63 @@ public class main {
                     }
                 }
             }
+            else if(option.equalsIgnoreCase("Altres")) {
+                System.out.println("Funció per provar getters i setters.");
+                System.out.println("Escull una opció de l'1 al 6:");
+                System.out.println("1) get_cjt()");
+                System.out.println("2) get_maxid()");
+                System.out.println("3) set_cjt()");
+                System.out.println("4) set_maxid()");
+                System.out.println("5) Obtenir un conjunt a partir d'un registre");
+                System.out.println("6) Obtenir el tamany del conjunt");
+                
+                int cop = lector.nextInt();
+                switch(cop) {
+                    case 1:
+                        if(cjt.get_cjt().isEmpty()) System.out.println("Aquest és el conjunt demanat, però és buit!");
+                        else System.out.println("Aquest és el conjunt demanat, té tamany " + cjt.get_cjt().size());
+                        break;
+                    case 2:
+                        System.out.println("L'ID més gran al Conjunt de Documents és " + cjt.get_maxid());
+                        break;
+                    case 3:
+                        System.out.println("Sobreescriure l'anterior conjunt?");
+                        String respuesta = lector.nextLine();
+                        Map<Integer, Document> cjt2 = new HashMap();
+                        if(respuesta.equalsIgnoreCase("si")) cjt.set_cjt(cjt2);
+                        System.out.println("--Operació realitzada amb èxit--");
+                        break;
+                    case 4:
+                        System.out.println("Introdeix un nou ID.");
+                        int nouid = lector.nextInt();
+                        cjt.set_maxid(nouid);
+                        System.out.println("--Operació realitzada amb èxit--");
+                        break;
+                    case 5:
+                        System.out.println("Introdueix id, titol, autor i tema, SEGUITS I SEPARATS PER DOS ESPAIS.");
+                        Cjt_Documents con = new Cjt_Documents();
+                        Scanner lector2 = new Scanner(System.in);
+                        String docu = lector2.nextLine();
+                        con.omplir_cjt(docu);
+                        Map<Integer, Document> m = con.get_cjt();
+                        for(Map.Entry<Integer, Document> entry : m.entrySet()) {
+                            System.out.println("ID: " + entry.getKey());
+                            System.out.print("Títol: ");
+                            System.out.print(entry.getValue().get_titol().get_frasestring() + '\n');
+                            System.out.print("Autor: ");
+                            System.out.print(entry.getValue().get_autor().get_frasestring() + '\n');
+                            System.out.print("Tema: ");
+                            System.out.print(entry.getValue().get_tema().get_p() + '\n');
+                        }
+                        break;
+                    case 6:
+                        System.out.println(cjt.tamany());
+                        break;
+                    default: System.out.println("ERROR: Ha de ser un nº entre 1 i 6!");
+                }
+            }
+            
+            System.out.println("Escull una ordre. (Afegir/Esborrar/Modificar/Imprimir/Consultar/Altres/Sortir)");
             option = lector.nextLine();
         }
    

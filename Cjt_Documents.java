@@ -9,10 +9,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
-import javafx.util.Pair;
 /**
  *
- * @author sergiokov20
+ * @author Sergio, Marc i Adrià
  */
 public class Cjt_Documents {
     private Map<Integer, Document> cjt = new HashMap();
@@ -78,7 +77,7 @@ public class Cjt_Documents {
         if(cjt.isEmpty()) {
             cjt.put(0, d);
             max_id = 0;
-            System.out.println("Operació realitzada amb èxit."); 
+            System.out.println("--Operació realitzada amb èxit--"); 
         }
         else {
             boolean error = false;
@@ -98,7 +97,7 @@ public class Cjt_Documents {
             if(!error) {
                 int nou = trobar_id_disponible();
                 cjt.put(nou, d);
-                System.out.println("Operació realitzada amb èxit.");
+                System.out.println("--Operació realitzada amb èxit--");
             }
         }
     }
@@ -108,7 +107,7 @@ public class Cjt_Documents {
             if(cjt.get(key) == null) System.out.println("ERROR: Document no trobat.");
             else {
                 cjt.remove(key);
-                System.out.println("Operació realitzada amb èxit.");
+                System.out.println("--Operació realitzada amb èxit--");
             }
         }
         else System.out.println("ERROR: No hi ha cap Document.");
@@ -125,7 +124,7 @@ public class Cjt_Documents {
                             cjt.remove(i);
                             if(i == max_id) recalcular_maxid();
                             trobat = true;
-                            System.out.println("Operació realitzada amb èxit.");
+                            System.out.println("--Operació realitzada amb èxit--");
                         }
                     }
                 }
@@ -151,14 +150,14 @@ public class Cjt_Documents {
                 cjt.get(id).set_autor_String(au);                
                 cjt.get(id).set_tema_String(te);
                 
-                System.out.println("Operació realitzada amb èxit.");
+                System.out.println("--Operació realitzada amb èxit--");
             }
             else if(option.equalsIgnoreCase("contingut")) {
                 System.out.println("Introdueix el nou contingut del document.");
                 String co = lector.nextLine();
                 
                 cjt.get(id).set_contingut_String(co);
-                System.out.println("Operació realitzada amb èxit.");
+                System.out.println("--Operació realitzada amb èxit--");
             }
             else System.out.println("ERROR: Comanda incorrecta.");
         }
@@ -195,7 +194,7 @@ public class Cjt_Documents {
                 cjt.get(id).set_autor_String(au);                
                 cjt.get(id).set_tema_String(te);
                 
-                System.out.println("Operació realitzada amb èxit.");
+                System.out.println("--Operació realitzada amb èxit--");
             }
             
             else if(option.equalsIgnoreCase("contingut")) {
@@ -203,7 +202,7 @@ public class Cjt_Documents {
                 String co = lector.nextLine();
                 
                 cjt.get(id).set_contingut_String(co);
-                System.out.println("Operació realitzada amb èxit.");
+                System.out.println("--Operació realitzada amb èxit--");
             }
             else System.out.println("ERROR: Comanda incorrecta.");
         }
@@ -276,7 +275,7 @@ public class Cjt_Documents {
         
         //DESPRÉS DE LO DE DALT CALDRÀ RETORNAR LA LLISTA DE K DOCUMENTS SEMBLANTS A D.
         
-        System.out.println("Operació realitzada amb èxit.");
+        System.out.println("--Operació realitzada amb èxit--");
     }
     
     public boolean existeix(Document d) {
@@ -304,79 +303,68 @@ public class Cjt_Documents {
     public int assignar_id_fitxer() { //NO SÉ SI AIXÒ ESTÀ BÉ (= CRITERI QUE PER ID DOCUMENT)
         return trobar_id_disponible();
     }
-    
-    //Funció marc xd
+   
     public void omplir_cjt(String s)
     {
-        boolean inici = true;
+        int i = 0;
+        int ident = 0;
+        boolean idtrobat = false;
+        boolean titrobat = false;
+        boolean autrobat = false;
+        boolean temtrobat = false;
+        Document d = new Document();
         
-        int i=0;
-        boolean id = true;
-        boolean titol = false;
-        boolean autor = false;
-        boolean tema = false;
-        Document D = new Document();
-        int cont = 0;
+        String suuu = "";
         
-        while(i < s.length()-1)
-        {
-            String suu;
-            suu = "";
-            if(id)
-            {
-                
-                while(s.charAt(i) == ' ' && s.charAt(i++) == ' ')
-                {
-                    suu+=s.charAt(i);
-                    i++;
+        while(i < s.length()) {
+            if(!idtrobat) {
+                if(s.charAt(i) == ' ' && s.charAt(i+1) == ' ') {
+                    i += 2;
+                    idtrobat = true;
+                    ident = Integer.parseInt(suuu);
+                    suuu = "";
+                    
                 }
-                id = false;
-                titol = true;
-                i++;
-            }
-            if(titol)
-            {
-                String aux;
-                aux = "";
-                while(s.charAt(i) == ' ' && s.charAt(i++) == ' ')
-                {
-                    aux+=s.charAt(i);
-                    i++;
+                else {
+                    suuu += s.charAt(i);
                 }
-                D.set_titol_String(aux);
-                titol= false;
-                autor = true;
-                i++;
             }
-            if(autor)
-            {
-                String aux;
-                aux = "";
-                while(s.charAt(i) == ' ' && s.charAt(i++) == ' ')
-                {
-                    aux+=s.charAt(i);
-                    i++;
+            if(idtrobat && !titrobat) {
+                if(s.charAt(i) == ' ' && s.charAt(i+1) == ' ') {
+                    i += 2;
+                    titrobat = true;
+                    d.set_titol_String(suuu);
+                    suuu = "";
+                    
                 }
-                D.set_autor_String(aux);
-                autor=false;
-                tema = true;
-                i++;
+                else {
+                    suuu += s.charAt(i);
+                }                
             }
-            if(tema)
-            {
-                String aux;
-                aux = "";
-                while(s.charAt(i) == '\n')
-                {
-                    aux+=s.charAt(i);
-                    i++;
+            if(idtrobat && titrobat && !autrobat) {
+                if(s.charAt(i) == ' ' && s.charAt(i+1) == ' ') {
+                    i += 2;
+                    autrobat = true;
+                    d.set_autor_String(suuu);
+                    suuu = "";
+                    
                 }
-                D.set_tema_String(aux);
-                tema = false;
-                id = true;
+                else {
+                    suuu += s.charAt(i);
+                }                 
             }
-            int foo = Integer.parseInt(suu);
-            cjt.put(foo, D);
+            if(idtrobat && titrobat && autrobat && !temtrobat) {
+                if((i+1 != s.length() && s.charAt(i+1) == '\n') || i+1 == s.length()) {
+                    temtrobat = true;
+                    suuu += s.charAt(i);
+                    d.set_tema_String(suuu); 
+                }
+                else {
+                    suuu += s.charAt(i);
+                }                 
+            }
+            ++i;
         }
+        cjt.put(ident, d);
     }
 }
