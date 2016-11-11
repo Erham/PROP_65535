@@ -89,6 +89,9 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 - public boolean is_stop_word()
 
 ============================================================
+       FUNCIONS DINS EL GRUP DE classes_fitxer.jar
+============================================================
+
 
 **FITXER:**
  - public Fitxer()                               << Es pot provar al menú 1.1
@@ -152,7 +155,7 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
  - public double distancia_boolea(Vector v2)                                   << Es pot provar al menú 5.3
  - public double cosinus_boolea(Vector v2)                                     << Es pot provar al menú 5.3
  - public double distancia_enter(Vector v2)                                    << Es pot provar al menú 5.3
- - private double distancia(Vector v2, int mode)                               << Es pot provar al menú 5.3 (es veu pel funcionament de distancia_boolea, cosinus boolea...)
+ - private double distancia(Vector v2, int mode)                               << Es pot provar al menú 5.3
 
 **VECTOR:**
  - public Vector()                                                << Es pot provar al menú 4.5
@@ -170,6 +173,5 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 
 ------
 PD: La funcio modificar_map es prova amb l'us de afegir_al_espai i extreure_del_espai, que la criden
-PD2: La funcio calcular_vector
-
-
+PD2: La funcio calcular_vector es proba amb l'us de vector_boolea i vector_enter, que la criden
+PD3: La funcio distancia() es proba amb l'us de distancia_boole, cosinus_boolea i distancia_enter, que la criden
