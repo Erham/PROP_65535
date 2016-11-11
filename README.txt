@@ -17,8 +17,20 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 **TEXT:** (text.jar)
 
 **FRASE:** (frase.jar)
+- public Frase()
+- public Frase(Paraula P)
+- public
+
+
+
 
 **PARAULA:** (paraula.jar)
+- public Paraula()
+- public Paraula(String P)
+- public String get_p()
+- public void set_p()
+- public void imprimir()
+- public boolean is_stop_word()
 
 **FITXER:** (fitxer.jar)
 
