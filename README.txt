@@ -88,9 +88,20 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 - public void imprimir()
 - public boolean is_stop_word()
 
-============================================================
-       FUNCIONS DINS EL GRUP DE classes_fitxer.jar
-============================================================
+===============================================================
+========  FUNCIONS DINS EL GRUP DE classes_fitxer.jar  ========
+===============================================================
+
+Els detalls a tenir en compte dins aquest grup de funcions els diu el driver.
+El driver presenta un esquema de menús, on cada classe te un numero, i cada conjunt de funcions agrupades per ser provades es presenten en la mateixa sub opció de menú (1.2 , 2.3...) Per exemple, si una funcio es pot provar al menu 3.2, vol dir que cal accedir primer a la opcio 3 en iniciar el driver, i despres entrar a la opcio 2 (dins de la 3)
+
+Comentaris
+1. La funcio modificar_map es prova amb l'us de afegir_al_espai i extreure_del_espai, que la criden
+2. La funcio calcular_vector es proba amb l'us de vector_boolea i vector_enter, que la criden
+3. La funcio distancia() es proba amb l'us de distancia_boole, cosinus_boolea i distancia_enter, que la criden
+4. La classe Vector no es prova en un menú principal sol, ja que otorga funcionalitats a les altres classes només. Per tant es prova juntament amb elles (com es pot veure, que una part de vector es prova al menú 4 i una altra al 5)
+
+5 (IMPORTANT). Dins el directori on s'executi classes_fitxer.jar CAL CREAR una carpeta arxius, és a dir que arxius i el .jar han der ser al mateix lloc
 
 
 **FITXER:**
@@ -172,6 +183,4 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
  - static Vector clonar(Vector v)                                 << Es pot provar al menú 5.3
 
 ------
-PD: La funcio modificar_map es prova amb l'us de afegir_al_espai i extreure_del_espai, que la criden
-PD2: La funcio calcular_vector es proba amb l'us de vector_boolea i vector_enter, que la criden
-PD3: La funcio distancia() es proba amb l'us de distancia_boole, cosinus_boolea i distancia_enter, que la criden
+
