@@ -304,4 +304,79 @@ public class Cjt_Documents {
     public int assignar_id_fitxer() { //NO SÉ SI AIXÒ ESTÀ BÉ (= CRITERI QUE PER ID DOCUMENT)
         return trobar_id_disponible();
     }
+    
+    //Funció marc xd
+    public void omplir_cjt(String s)
+    {
+        boolean inici = true;
+        
+        int i=0;
+        boolean id = true;
+        boolean titol = false;
+        boolean autor = false;
+        boolean tema = false;
+        Document D = new Document();
+        int cont = 0;
+        
+        while(i < s.length()-1)
+        {
+            String suu;
+            suu = "";
+            if(id)
+            {
+                
+                while(s.charAt(i) == ' ' && s.charAt(i++) == ' ')
+                {
+                    suu+=s.charAt(i);
+                    i++;
+                }
+                id = false;
+                titol = true;
+                i++;
+            }
+            if(titol)
+            {
+                String aux;
+                aux = "";
+                while(s.charAt(i) == ' ' && s.charAt(i++) == ' ')
+                {
+                    aux+=s.charAt(i);
+                    i++;
+                }
+                D.set_titol_String(aux);
+                titol= false;
+                autor = true;
+                i++;
+            }
+            if(autor)
+            {
+                String aux;
+                aux = "";
+                while(s.charAt(i) == ' ' && s.charAt(i++) == ' ')
+                {
+                    aux+=s.charAt(i);
+                    i++;
+                }
+                D.set_autor_String(aux);
+                autor=false;
+                tema = true;
+                i++;
+            }
+            if(tema)
+            {
+                String aux;
+                aux = "";
+                while(s.charAt(i) == '\n')
+                {
+                    aux+=s.charAt(i);
+                    i++;
+                }
+                D.set_tema_String(aux);
+                tema = false;
+                id = true;
+            }
+            int foo = Integer.parseInt(suu);
+            cjt.put(foo, D);
+        }
+    }
 }
