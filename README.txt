@@ -88,81 +88,85 @@ Marc Català, Adrià Fors i Sergio Rodríguez | ENTREGA 1 PROP - GRUP 14.
 - public void imprimir()
 - public boolean is_stop_word()
 
+============================================================
+
 **FITXER:**
-- public Fitxer()
-- public static String path()
-- protected BufferedWriter obrir_fitxer_w()
-- private BufferedReader obrir_fitxer_r()
-- public String get_text()
-- public void set_text(String t)
-- public boolean creat()
-- public boolean modificat()
-- public void set_nom(String t)
-- public void llegir()
-- public void guardar()
-- public void buidar_text()
-- protected void crear(File a)
-- public void eliminar()
+ - public Fitxer() << Es prova en el menú 1.1
+ - public static String path() << 1.1
+ - protected BufferedWriter obrir_fitxer_w() << 1.3   
+ - private BufferedReader obrir_fitxer_r() << 1.2
+ - public String get_text() << 1.2
+ - public void set_text(String t) << 1.2
+ - public boolean creat() << 1.1
+ - public boolean modificat() << 1.3
+ - public void set_nom(String t) << 1.1
+ - public void llegir() << 1.2
+ - public void guardar() << 1.3
+ - public void buidar_text() << 1.4
+ - protected void crear(File a) << 1.1
+ - public void eliminar() << 1.5
 
 **ARXIU:** 
-- public Arxiu()
-- public Arxiu(int id)
-- public Arxiu(int id, String titol_1, String autor_1, String tema_1)
-- private void ini()
-- public String get_titol()
-- public String get_autor()
-- public String get_tema()
-- public int get_id()
-- public void set_titol(String t)
-- public void set_autor(String a)
-- public void set_tema(String t)
-- public void set_id(int id)
+ - public Arxiu() << 2.1
+ - public Arxiu(int id) << 2.3
+ - public Arxiu(int id, String titol_1, String autor_1, String tema_1) << 2.2
+ - private void ini() << 2.1
+ - public String get_titol() << 2.1
+ - public String get_autor() << 2.1
+ - public String get_tema() << 2.1
+ - public int get_id() << 2.1
+ - public void set_titol(String t) << 2.1
+ - public void set_autor(String a) << 2.1
+ - public void set_tema(String t) << 2.1
+ - public void set_id(int id) << 2.1
+ 
+ **REGISTRE:** 
+ - public Registre() << 3.1
+ - private void ini() << 3.1
+ - public void afegir_arxiu() << 3.2
 
 
 **ESPAI_VECTORIAL:**
-- public Espai_vectorial()
-- private void ini()
-- public int get_dimensio()
-- public void set_dimensio(int dim)
-- private void omplir_map()
-- public void esborrar_map()
-- public void imprimir_map()
-- public void afegir_al_espai(String doc)
-- public void extreure_del_espai(String doc)
-- private void modificar_map(String doc, boolean mode)
-- private void omplir_list()
-- public void imprimir_list()
-- private Vector calcular_vector(String doc, boolean mode)
-- public Vector vector_boolea(String doc)
-- public Vector vector_enter(String doc)
-- public void guardar()
+ - public Espai_vectorial() << 4.1
+ - private void ini() << 4.1
+ - public int get_dimensio() << 4.1
+ - public void set_dimensio(int dim) << 4.1
+ - private void omplir_map() << 4.2
+ - public void esborrar_map() << 4.4
+ - public void imprimir_map() << 4.2
+ - public void afegir_al_espai(String doc) << 4.3
+ - public void extreure_del_espai(String doc) << 4.3
+ - private void modificar_map(String doc, boolean mode) << 4.3 (es veu pel funcionament de afegir i extreure)
+ - private void omplir_list() << 4.2
+ - public void imprimir_list() << 4.2
+ - private Vector calcular_vector(String doc, boolean mode) << 4.5 (es veu pel funcionament de  vector_boolea i vector_enter)
+ - public Vector vector_boolea(String doc) << 4.5
+ - public Vector vector_enter(String doc) << 4.5
+ - public void guardar() << 4.2
 
 **COMPARADOR:**
-- public Comparador()
-- public void assignar_vector_boolea(Espai_vectorial espai, String doc)
-- public void assignar_vector_enter(Espai_vectorial espai, String doc)
-- public double distancia_boolea(Vector v2)
-- public double cosinus_boolea(Vector v2)
-- public double distancia_enter(Vector v2)
-- private double distancia(Vector v2, int mode)
+ - public Comparador() << 5.1
+ - public void assignar_vector_boolea(Espai_vectorial espai, String doc) << 5.1
+ - public void assignar_vector_enter(Espai_vectorial espai, String doc) << 5.2 
+ - public double distancia_boolea(Vector v2) << 5.3
+ - public double cosinus_boolea(Vector v2) << 5.3
+ - public double distancia_enter(Vector v2) << 5.3
+ - private double distancia(Vector v2, int mode) << 5.3 (es veu pel funcionament de distancia_boolea, cosinus boolea...)
 
 **VECTOR:**
-- public Vector()
-- public void set_mida(int m)
-- public int get_dimensio()
-- public double[] get_elements()
-- public void modificar_element(int index, double valor)
-- public double get_element_i(int index)
-- public void omplir_vector(String vec)
-- public void normalitzar()
-- public double modul()
-- public void dividir()
-- static Vector restar(Vector v1, Vector v2)
-- static Vector clonar(Vector v)
+ - public Vector() << 4.5
+ - public void set_mida(int m) << 4.5
+ - public int get_dimensio() << 4.5
+ - public double[] get_elements() << 5.1
+ - public void modificar_element(int index, double valor) << 4.5
+ - public double get_element_i(int index) << 4.5
+ - public void omplir_vector(String vec) << 5.3
+ - public void normalitzar() << 5.3
+ - public double modul() << 5.3
+ - public void dividir() << 5.3
+ - static Vector restar(Vector v1, Vector v2) << 5.3
+ - static Vector clonar(Vector v) zz 5.3
 
-**REGISTRE:** 
-- public Registre()
-- private void ini()
-- public void afegir_arxiu()
+
 
 
