@@ -13,6 +13,8 @@ import fitxers.Comparador;
 import fitxers.Espai_vectorial;
 import fitxers.Vector;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 /**
  *
@@ -444,4 +446,112 @@ public class Cjt_Documents {
         }
         cjt.put(ident, d);
     }
+    
+    
+    //------------------UPDATE 04/12/2016------------------------//
+
+    /**
+     *
+     * @param lp
+     * @param lpar
+     * @param id
+     * @return 
+     */
+    
+    /*
+    public Map<Integer ,Map<String, Integer> > omplir_vector(List<Paraula> lp, List<Paraula> lpar, int id)
+    {
+        Map<Integer ,Map<String, Integer> > comp = new HashMap();
+        int cont = 0;
+        for (int i=0; i < lpar.size(); i++) {
+            for (int j =0; j < lp.size(); j++) {
+                if(lpar.get(i).equals(lp.get(j))) cont++;
+            }  
+        }
+         //Map <String, Integer> res = new HashMap();
+         //res.put(lpar.get(i).toString(), cont);
+         comp.put(id, cont);
+        return comp;
+    }
+    */
+    
+      public Map<Integer , Integer> omplir_vector(List<Paraula> lp, List<Paraula> lpar, int id)
+    {
+        Map<Integer ,Integer > comp;
+        comp = new HashMap();
+        int cont = 0;
+        for (int i=0; i < lpar.size(); i++) {
+            for (int j =0; j < lp.size(); j++) {
+                if(lpar.get(i).equals(lp.get(j))) cont++;
+            }  
+        }
+         //Map <String, Integer> res = new HashMap();
+         //res.put(lpar.get(i).toString(), cont);
+        comp.put(id, cont);
+        return comp;
+    }
+    
+    /**
+     *
+     * @param comp
+     * @param j
+     * @param SIZE
+     * @return
+     */
+      
+    public Map<Document ,Integer>  map_sort(Map<Integer, Integer> comp, int j, int SIZE)
+    {
+        Map<Document ,Integer>  sort;
+        sort = new HashMap();
+        
+        int max = comp.get(0);
+        for(int k = 0; k < SIZE; k++)
+        {
+            for(int i = 1; i < comp.size(); i++)
+            {
+                if(comp.get(i) > max) max = comp.get(i);       
+            } 
+            
+            sort.put(cjt.get(j), max);
+        }
+        
+        return sort;
+    }
+    
+    
+    public Map<Document, Integer> relevantes_query(List<Paraula> listpar, int k)
+    {
+    
+        Map<Document, Integer> docs;
+        docs = new HashMap();
+        
+        int i = 0;
+        Map<Integer ,Integer> comp;
+        comp = new HashMap();
+        
+        while(i < max_id)
+        {
+            List<Frase> lf;
+            
+            cjt.get(i).get_contingut().dividir();
+            
+            lf = cjt.get(i).get_contingut().get_lf();
+            
+            List<Paraula> lp;
+            
+            lf.get(i).dividir();
+            
+            lp = lf.get(i).get_lp();
+            
+            //Fins aqui hem dividit el contingut del document en una llista de paraules
+            
+            comp = omplir_vector(lp, listpar, i);
+            
+            //omplim el vector amb les paraules segons si surten o no en el contingut
+               
+            docs = map_sort(comp, i, k);
+        }
+      
+        return docs;
+    }   
 }
