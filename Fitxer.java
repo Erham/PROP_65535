@@ -21,7 +21,21 @@ public class Fitxer {
         nom = new String();
         text = new String();
         
+        
+        
     }
+    
+    public Fitxer(String nom_fitxer) {
+        
+        nom = nom_fitxer;
+        text = new String();
+        File aux = new File(path(),this.nom + ".txt");
+        presencia = aux.exists();
+        
+        
+        
+    }
+    
     
     //  Retorna el path de la carpeta del projecte
     public static String path() {
