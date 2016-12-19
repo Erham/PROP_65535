@@ -23,8 +23,17 @@ import java.util.TreeMap;
 public class Cjt_Documents {
     private Map<Integer, Document> cjt = new HashMap();
     private int max_id; //ID màxim enregistrat fins ara
+    private int hay_error;
     
-    //private Map<Pair<Frase, Frase>> mapadeadria;
+    /*VALORS POSSIBLES DE "hay_error":
+    -- OK --
+    0) Operació realitzada amb èxit.
+    -- ERRORS --
+    1) Document ja existeix.
+    2) Document no existeix.
+    3) El conjunt és buit.
+    4) Comanda incorrecta.
+    */
     
     private void recalcular_maxid() {
         int temp = max_id;
@@ -52,7 +61,7 @@ public class Cjt_Documents {
     }
     
     public Cjt_Documents() {
-        
+        hay_error = 0;
     }
     
     public Cjt_Documents(Document d) {
@@ -84,18 +93,18 @@ public class Cjt_Documents {
         if(cjt.isEmpty()) {
             cjt.put(0, d);
             max_id = 0;
-            System.out.println("--Operació realitzada amb èxit--"); 
+            hay_error = 0; 
         }
         else {
             boolean error = false;
             int i = 0;
             while(i <= max_id && !error) {
                 if(cjt.get(i) != null) {
-                    boolean comp1 = (cjt.get(i).get_titol().get_frasestring().equals(d.get_titol().get_frasestring()));
-                    boolean comp2 = (cjt.get(i).get_autor().get_frasestring().equals(d.get_autor().get_frasestring()));
+                    boolean comp1 = (cjt.get(i).get_titol().get_frasestring().equalsIgnoreCase(d.get_titol().get_frasestring()));
+                    boolean comp2 = (cjt.get(i).get_autor().get_frasestring().equalsIgnoreCase(d.get_autor().get_frasestring()));
 
                     if(comp1 && comp2) {
-                        System.out.println("ERROR: El document ja existeix.");
+                        hay_error = 1;
                         error = true;
                     }
                 }
@@ -103,21 +112,23 @@ public class Cjt_Documents {
             }
             if(!error) {
                 int nou = trobar_id_disponible();
+                d.set_id(nou);
                 cjt.put(nou, d);
-                System.out.println("--Operació realitzada amb èxit--");
+                hay_error = 0;
             }
         }
     }
     
     public void esborrar(int key) {
         if(!cjt.isEmpty()) {
-            if(cjt.get(key) == null) System.out.println("ERROR: Document no trobat.");
+            if(cjt.get(key) == null) hay_error = 2;
             else {
                 cjt.remove(key);
-                System.out.println("--Operació realitzada amb èxit--");
+                if(key == max_id) recalcular_maxid();
+                hay_error = 0;
             }
         }
-        else System.out.println("ERROR: No hi ha cap Document.");
+        else hay_error = 3;
     }
     
     public void esborrarDoc(String tit, String aut) {
@@ -131,15 +142,15 @@ public class Cjt_Documents {
                             cjt.remove(i);
                             if(i == max_id) recalcular_maxid();
                             trobat = true;
-                            System.out.println("--Operació realitzada amb èxit--");
+                            hay_error = 0;
                         }
                     }
                 }
                 ++i;
             }
-            if(!trobat) System.out.println("ERROR: Document no trobat.");
+            if(!trobat) hay_error = 2;
         }
-        else System.out.println("ERROR: El conjunt de documents és buit.");
+        else hay_error = 3;
     }
     
     public void modificar(int id) {
@@ -157,18 +168,18 @@ public class Cjt_Documents {
                 cjt.get(id).set_autor_String(au);                
                 cjt.get(id).set_tema_String(te);
                 
-                System.out.println("--Operació realitzada amb èxit--");
+                hay_error = 0;
             }
             else if(option.equalsIgnoreCase("contingut")) {
                 System.out.println("Introdueix el nou contingut del document.");
                 String co = lector.nextLine();
                 
                 cjt.get(id).set_contingut_String(co);
-                System.out.println("--Operació realitzada amb èxit--");
+                hay_error = 0;
             }
-            else System.out.println("ERROR: Comanda incorrecta.");
+            else hay_error = 4;
         }
-        else System.out.println("ERROR: El document no existeix.");
+        else hay_error = 2;
     }
     
     public void modificarDoc(String tit, String aut) {
@@ -201,7 +212,7 @@ public class Cjt_Documents {
                 cjt.get(id).set_autor_String(au);                
                 cjt.get(id).set_tema_String(te);
                 
-                System.out.println("--Operació realitzada amb èxit--");
+                hay_error = 0;
             }
             
             else if(option.equalsIgnoreCase("contingut")) {
@@ -209,27 +220,29 @@ public class Cjt_Documents {
                 String co = lector.nextLine();
                 
                 cjt.get(id).set_contingut_String(co);
-                System.out.println("--Operació realitzada amb èxit--");
+                hay_error = 0;
             }
-            else System.out.println("ERROR: Comanda incorrecta.");
+            else hay_error = 4;
         }
-        else System.out.println("ERROR: El document no existeix.");
+        else hay_error = 2;
     }
     
-    public void cerca_Autor(String autor) {
-        System.out.println("Llista de documents escrits per " + autor + ':');
+    public String cerca_Autor(String autor) {
+        String texto = "";
         for(int i = 0; i <= max_id; ++i) {
             if(cjt.get(i) != null) {
                 if(cjt.get(i).get_autor().get_frasestring().equalsIgnoreCase(autor)) {
-                    System.out.println(cjt.get(i).get_titol().get_frasestring());
+                    texto += cjt.get(i).get_titol().get_frasestring() + "\n";
                 }
             }
         }
+        return texto;
     }
     
-    public void cerca_Prefix(String prefix) {
+    public String cerca_Prefix(String prefix) {
+        String texto = "";
+        
         Set<String> autors = new HashSet();
-        System.out.println("Llista de autors que comencen per " + prefix + ':');
         for(int i = 0; i <= max_id; ++i) {
             if(cjt.get(i) != null) {
                 if(cjt.get(i).get_autor().get_frasestring().toLowerCase().startsWith(prefix.toLowerCase())) {
@@ -241,21 +254,24 @@ public class Cjt_Documents {
             }
         }
         for(String ss : autors) {
-            System.out.println(ss);
+            texto += ss + "\n";
         }
+        
+        return texto;
     }
     
-    public void cerca_Document(String titol, String autor) {
-        System.out.println("El contingut del document buscat és:");
+    public String cerca_Document(String titol, String autor) {
+        String texto = "";
         for(int i = 0; i <= max_id; ++i) {
             if(cjt.get(i) != null) {
                 if(cjt.get(i).get_titol().get_frasestring().equalsIgnoreCase(titol)){
                     if(cjt.get(i).get_autor().get_frasestring().equalsIgnoreCase(autor)) {
-                        System.out.println(cjt.get(i).get_contingut().get_textstring());
+                        texto += cjt.get(i).get_contingut().get_textstring() + "\n";
                     }
                 }
             }
         }
+        return texto;
     }
     
     public void cerca_Semblants(Document d, int k) throws IOException {
@@ -350,22 +366,24 @@ public class Cjt_Documents {
                     }
                 }
                 break;
-            default: System.out.println("ERROR: Ha de ser un nº entre 1 i 3!");
+            default: hay_error = 4;
                 break;
         }
         
-        System.out.println("--Operació realitzada amb èxit--");
+        hay_error = 0;
     }
     
     public boolean existeix(Document d) {
         boolean existeix = false;
         int i = 0;
         while(i <= max_id && !existeix) {
-            boolean comp1 = (cjt.get(i).get_titol().get_frasestring().equals(d.get_titol().get_frasestring()));
-            boolean comp2 = (cjt.get(i).get_autor().get_frasestring().equals(d.get_autor().get_frasestring()));
-                 
-            if(comp1 && comp2) {
-                existeix = true;
+            if(cjt.get(i) != null) {
+                boolean comp1 = (cjt.get(i).get_titol().get_frasestring().equalsIgnoreCase(d.get_titol().get_frasestring()));
+                boolean comp2 = (cjt.get(i).get_autor().get_frasestring().equalsIgnoreCase(d.get_autor().get_frasestring()));
+
+                if(comp1 && comp2) {
+                    existeix = true;
+                }
             }
             ++i;
         }
@@ -454,104 +472,182 @@ public class Cjt_Documents {
      *
      * @param lp
      * @param lpar
-     * @param id
      * @return 
+     * @throws java.io.IOException 
      */
     
-    /*
-    public Map<Integer ,Map<String, Integer> > omplir_vector(List<Paraula> lp, List<Paraula> lpar, int id)
+      public int omplir_vector(List<Paraula> lp, List<Paraula> lpar) throws IOException
     {
-        Map<Integer ,Map<String, Integer> > comp = new HashMap();
+
         int cont = 0;
-        for (int i=0; i < lpar.size(); i++) {
-            for (int j =0; j < lp.size(); j++) {
-                if(lpar.get(i).equals(lp.get(j))) cont++;
+        
+        for (int i=0; i < lp.size(); i++) {
+            for (int j =0; j < lpar.size(); j++) {
+            
+                Paraula p1 = lpar.get(j);               
+                Paraula p2 = lp.get(i);
+                
+                String s1 = p1.get_p();
+                String s2 = p2.get_p();              
+ 
+                if(s1.equalsIgnoreCase(s2) && !p2.is_stop_word() && !s1.equalsIgnoreCase(" ")) 
+                {
+                    cont++;
+                }
             }  
         }
-         //Map <String, Integer> res = new HashMap();
-         //res.put(lpar.get(i).toString(), cont);
-         comp.put(id, cont);
-        return comp;
-    }
-    */
-    
-      public Map<Integer , Integer> omplir_vector(List<Paraula> lp, List<Paraula> lpar, int id)
-    {
-        Map<Integer ,Integer > comp;
-        comp = new HashMap();
-        int cont = 0;
-        for (int i=0; i < lpar.size(); i++) {
-            for (int j =0; j < lp.size(); j++) {
-                if(lpar.get(i).equals(lp.get(j))) cont++;
-            }  
-        }
-         //Map <String, Integer> res = new HashMap();
-         //res.put(lpar.get(i).toString(), cont);
-        comp.put(id, cont);
-        return comp;
+
+        return cont;
     }
     
     /**
      *
      * @param comp
-     * @param j
-     * @param SIZE
+     * @param mp
+     * @param kdoc
      * @return
      */
-      
-    public Map<Document ,Integer>  map_sort(Map<Integer, Integer> comp, int j, int SIZE)
+
+    public HashMap<Integer, Integer> map_sort(Map<Integer, Integer> comp, HashMap<Integer, Integer> mp, int kdoc)
     {
-        Map<Document ,Integer>  sort;
-        sort = new HashMap();
-        
-        int max = comp.get(0);
-        for(int k = 0; k < SIZE; k++)
-        {
-            for(int i = 1; i < comp.size(); i++)
+      int max = 0;
+      int i = -1;
+      int z = 0;
+      List<Integer> repetits;
+      repetits = new ArrayList();
+     
+        while(z < kdoc){
+            for(int j=0; j <= max_id; j++)
             {
-                if(comp.get(i) > max) max = comp.get(i);       
-            } 
-            
-            sort.put(cjt.get(j), max);
+                if(comp.get(j) != null) {
+                    int val = comp.get(j);
+                    if(val > max && repetits.isEmpty()) {
+                        max = val;
+                        i = j;
+                    }
+                    else if(val > max)
+                    {
+                        boolean trobat = false;
+                        for(int imp=0; imp < repetits.size() && !trobat; imp++)
+                        {
+                            int rep = repetits.get(imp);
+                            int l = j;
+                            if(l == rep) trobat = true;
+                        }
+                        if(!trobat)
+                        {
+                            i = j;
+                            max = val;
+                        }
+                    }
+                }
+            }
+
+            if(i > -1)
+            {
+                mp.put(i, max);
+                repetits.add(i);
+            }
+            max = 0;
+            i = -1;
+            z++;
         }
-        
-        return sort;
+        return mp;
     }
-    
-    
-    public Map<Document, Integer> relevantes_query(List<Paraula> listpar, int k)
+
+
+      
+      
+    /**
+     *
+     * @param listpar
+     * @param k
+     * @return
+     * @throws java.io.IOException
+     */
+    public HashMap<Integer, Integer> relevantes_query(List<Paraula> listpar, int k) throws IOException
     {
     
-        Map<Document, Integer> docs;
+        HashMap<Integer, Integer>  docs;
         docs = new HashMap();
         
         int i = 0;
         Map<Integer ,Integer> comp;
-        comp = new HashMap();
-        
-        while(i < max_id)
+        comp = new HashMap();      
+              
+        while(i <= max_id)
         {
-            List<Frase> lf;
-            
-            cjt.get(i).get_contingut().dividir();
-            
-            lf = cjt.get(i).get_contingut().get_lf();
-            
-            List<Paraula> lp;
-            
-            lf.get(i).dividir();
-            
-            lp = lf.get(i).get_lp();
-            
-            //Fins aqui hem dividit el contingut del document en una llista de paraules
-            
-            comp = omplir_vector(lp, listpar, i);
-            
-            //omplim el vector amb les paraules segons si surten o no en el contingut
-               
-            docs = map_sort(comp, i, k);
+            String texte;
+            if(cjt.get(i) != null) {
+                texte = cjt.get(i).get_contingut().get_textstring();
+                
+                List<Paraula> lp = new ArrayList();
+
+                String[] partes = texte.split("[[ ]*|[,]*|[(]*|[)]*|[.]*|[:]*|[?!]*|[-]*|[!]*|[?]*|[+]*]+");
+                for(String ss : partes) {
+                    Paraula par = new Paraula();
+                    //provas separar paraules
+                    par.set_p(ss);
+                    lp.add(par);              
+                }
+
+                int cont;
+                cont = omplir_vector(lp, listpar);
+                comp.put(i, cont);
+            }
+            i++; 
         }
+        //omplim el vector amb les paraules segons si surten o no en el contingut           
+        HashMap<Integer, Integer> mp;
+        mp = new HashMap();
+        docs = map_sort(comp, mp, k);
       
         return docs;
-    }   
+    }
+    
+    public int get_error() {
+        return hay_error;
+    }
+    
+    public String get_mensaje_error() {
+        String valor = "";
+        
+        switch (hay_error) {
+            case 0:
+                valor = "Operació realitzada amb èxit.";
+                break;
+            case 1:
+                valor = "El document ja existeix.";
+                break;
+            case 2:
+                valor = "El document no existeix.";
+                break;
+            case 3:
+                valor = "El conjunt és buit.";
+                break;
+            case 4:
+                valor = "Comanda incorrecta.";
+                break;
+            default:
+                break;
+        }
+        
+        return valor;
+    }
+    
+    public int get_id_doc(Document d) {
+        int valor = -1;
+        boolean trobat = false;
+        int i = 0;
+        
+        while(i <= max_id && !trobat) {
+            if(cjt.get(i).get_titol().get_frasestring().equals(d.get_titol().get_frasestring()) && cjt.get(i).get_autor().get_frasestring().equals(d.get_autor().get_frasestring())) {
+                trobat = true;
+                valor = i;
+            }
+            ++i;
+        }
+        
+        return valor;
+    }
 }

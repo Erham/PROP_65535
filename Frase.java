@@ -56,6 +56,11 @@ public class Frase {
         return frasestring.length();
     }
     
+    public int SIZE() {     
+        return l_par.size();
+    }
+    
+    
     public void afegir(Paraula p) {
         l_par.add(p);
         frasestring += " ";

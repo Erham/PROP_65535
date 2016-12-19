@@ -87,6 +87,10 @@ public class Document {
         return id;
     }
     
+    public void set_id(int id) {
+        this.id = id;
+    }
+    
     public void set_titol(Frase titol) {
         this.titol = titol;
     }

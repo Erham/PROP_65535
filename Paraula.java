@@ -45,7 +45,7 @@ public class Paraula {
             new InputStreamReader(new FileInputStream(file),"ISO-8859-1"));
         String aux;
         while ((aux = b.readLine()) != null) {
-            if(p.equals(aux)) { 
+            if(p.equalsIgnoreCase(aux)) { 
                 return true;
             }
         }
