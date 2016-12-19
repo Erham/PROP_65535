@@ -35,6 +35,17 @@ public class Cjt_Documents {
     4) Comanda incorrecta.
     */
     
+    public ArrayList<Integer> get_all_ids() {
+        ArrayList<Integer> llista_ids = new ArrayList<>(); llista_ids.clear();
+        Iterator it = (cjt).entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Integer,Document> element = (Map.Entry<Integer,Document>) it.next();
+            Integer id = element.getKey();
+            llista_ids.add(id);
+        }
+        return llista_ids;
+    }
+    
     private void recalcular_maxid() {
         int temp = max_id;
         for(int i = 0; i <= temp; ++i) {
