@@ -11,8 +11,15 @@ import java.util.Scanner;
 import java.util.Set;
 import fitxers.Comparador;
 import fitxers.Espai_vectorial;
+import fitxers.Fitxer;
 import fitxers.Vector;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
@@ -36,14 +43,15 @@ public class Cjt_Documents {
     */
     
     public ArrayList<Integer> get_all_ids() {
-        ArrayList<Integer> llista_ids = new ArrayList<>(); llista_ids.clear();
-        Iterator it = (cjt).entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<Integer,Document> element = (Map.Entry<Integer,Document>) it.next();
-            Integer id = element.getKey();
-            llista_ids.add(id);
+        ArrayList<Integer> al = new ArrayList();
+        int i = 0;
+        while(i <= max_id) {
+            if(cjt.get(i) != null) {
+                al.add(i);
+            }
+            ++i;
         }
-        return llista_ids;
+        return al;
     }
     
     private void recalcular_maxid() {
@@ -243,7 +251,7 @@ public class Cjt_Documents {
         for(int i = 0; i <= max_id; ++i) {
             if(cjt.get(i) != null) {
                 if(cjt.get(i).get_autor().get_frasestring().equalsIgnoreCase(autor)) {
-                    texto += cjt.get(i).get_titol().get_frasestring() + "\n";
+                    texto += "- "+ cjt.get(i).get_titol().get_frasestring() + "\n";
                 }
             }
         }
@@ -265,7 +273,7 @@ public class Cjt_Documents {
             }
         }
         for(String ss : autors) {
-            texto += ss + "\n";
+            texto += "- " + ss + "\n";
         }
         
         return texto;
@@ -277,7 +285,7 @@ public class Cjt_Documents {
             if(cjt.get(i) != null) {
                 if(cjt.get(i).get_titol().get_frasestring().equalsIgnoreCase(titol)){
                     if(cjt.get(i).get_autor().get_frasestring().equalsIgnoreCase(autor)) {
-                        texto += cjt.get(i).get_contingut().get_textstring() + "\n";
+                        texto += "- " + cjt.get(i).get_contingut().get_textstring() + "\n";
                     }
                 }
             }
@@ -285,18 +293,13 @@ public class Cjt_Documents {
         return texto;
     }
     
-    public void cerca_Semblants(Document d, int k) throws IOException {
-        System.out.println("De l'1 al 3, quin mètode vols?");
-        System.out.println("1. Distància vectorial entre dos documents (Espai vectorial de booleans)");
-        System.out.println("2. Cosinus entre els vectors de dos documents (Espai vectorial de booleans))");
-        System.out.println("3. Distància vectorial entre dos documents (Espai vectorial d'enters)");
-        
-        Scanner lector = new Scanner(System.in);
-        int num = lector.nextInt();
+    public void cerca_Semblants(Document d, int k, int answer) throws IOException {
+        int num = answer;
         switch (num) {
             case 1:
                 Comparador c = new Comparador();
                 Espai_vectorial ev = new Espai_vectorial();
+                ev.set_dimensio(20);
                 String s = d.get_contingut().netejear();
                 
                 c.assignar_vector_boolea(ev, s);
@@ -412,7 +415,7 @@ public class Cjt_Documents {
         return trobar_id_disponible();
     }
    
-    public void omplir_cjt(String s)
+    public void omplir_cjt(String s) throws UnsupportedEncodingException, FileNotFoundException, IOException
     {
         int i = 0;
         int ident = 0;
@@ -430,6 +433,7 @@ public class Cjt_Documents {
                     i += 2;
                     idtrobat = true;
                     ident = Integer.parseInt(suuu);
+                    d.set_id(ident);
                     suuu = "";
                     
                 }
@@ -466,14 +470,43 @@ public class Cjt_Documents {
                     temtrobat = true;
                     suuu += s.charAt(i);
                     d.set_tema_String(suuu); 
+                    i+=1;
                 }
                 else {
                     suuu += s.charAt(i);
                 }                 
             }
+            
+            if(idtrobat && titrobat && autrobat && temtrobat) {
+                cjt.put(ident, d);
+                if(ident > max_id) max_id = ident;
+                suuu = "";
+                idtrobat = false;
+                titrobat = false;
+                autrobat = false;
+                temtrobat = false;
+                d = new Document();
+            }
+            
             ++i;
         }
-        cjt.put(ident, d);
+        
+        //Obtenció dels conjunts:
+        int j = 0;
+        while(j <= max_id) {
+            String filename = Fitxer.path();
+            filename = filename.concat("/" + String.valueOf(j) + ".txt");
+            File file = new File(filename);
+            BufferedReader b = new BufferedReader(
+                new InputStreamReader(new FileInputStream(file),"UTF-8"));
+            String s2 = "";
+            String lector;
+            while((lector = b.readLine()) != null) {
+                s2 += lector;
+            }
+            cjt.get(j).set_contingut_String(s2);
+            ++j;
+        }
     }
     
     
