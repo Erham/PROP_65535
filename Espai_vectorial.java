@@ -1,6 +1,7 @@
 package fitxers;
 
 import static fitxers.Fitxer.path;
+import gestordocuments.Paraula;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
@@ -64,7 +65,7 @@ public class Espai_vectorial extends Fitxer {
     //  Omple el map "paraules" agafant tots els paraula_frequencia del String "text"
     //  Si "text" és buit ho comunica
     public void omplir_map() {
-        int size = (this.text).length();  
+        int size = (this.text).length() - 1;  
         if (size > 0) {        // executar només si el String és > 0, si no, vol dir que a l'espai no hi havia paraules (encara)
             (this.paraules).clear();
             String t = this.text;
@@ -172,14 +173,24 @@ public class Espai_vectorial extends Fitxer {
     
     //  Buida "llista". Omple "llista" amb els valors de "paraules"
     //  Ordena "llista" de més gran a més petit segons la frequencia de cada paraula
-    public void omplir_list() {
+    public void omplir_list() throws IOException {
         (this.llista).clear();
         Iterator it = (this.paraules).entrySet().iterator();
         Map.Entry<String,Integer> element;
         
         while (it.hasNext()) {
             element = (Map.Entry<String,Integer>) it.next();   // obtenim una entrada del map
-            (this.llista).add(element);     // afegim l'entrada a la llista
+            
+            
+            String s = element.getKey();
+            Paraula p = new Paraula(s);
+            
+            
+            
+            
+            if (!p.is_stop_word()) {
+                (this.llista).add(element);     // afegim l'entrada a la llista
+            }
         }
         
         Comparator<Map.Entry<String,Integer>> comp = Map.Entry.<String,Integer>comparingByValue().reversed();  // comparador pels valors en ordre gran...petit
@@ -187,7 +198,33 @@ public class Espai_vectorial extends Fitxer {
     }
     
     public void imprimir_list() {
-        System.out.println(this.llista);
+        
+        int i = 0;
+        int a = 0;
+        
+        System.out.println("paraules");
+        System.out.println("========");
+        System.out.println();
+        
+        for (Map.Entry<String,Integer> entry : llista) {
+            i++;
+            System.out.println(entry.getValue()+ "  " + entry.getKey());
+            
+            
+            String s = entry.getKey();
+            if ("argument".equals(s)) a = i;
+            
+            
+            
+            
+        }
+        
+        System.out.println(a);
+        
+
+        
+        
+        
     }
     
     //  Retorna el Vector corresponent al document en String "doc"
@@ -211,9 +248,6 @@ public class Espai_vectorial extends Fitxer {
                 }
                 else {
                     paraula = doc.substring(start, size);   // paraula = doc[última paraula]
-                     System.out.println("--------------------------------------------");
-        System.out.println(paraula);
-        System.out.println("--------------------------------------------");
                 }
                 // ja tenim la paraula a "paraula"
                 // mode = cert -> boolea  /  mode = fals -> enter

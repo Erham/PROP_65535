@@ -8,7 +8,7 @@ public class Vector {
     
     //  Crea una instancia de Vector, amb tots els termes de "element[]" a 0.0
     public Vector() {
-        this.dimensio = 20;
+        this.dimensio = 2500;
         mida = 0;
         element = new double[dimensio];
         
@@ -51,6 +51,11 @@ public class Vector {
             if (end < 0) {
                 end = vec.length();
             }
+            
+            
+            System.out.println("s");
+            
+            
             this.element[i] = Double.parseDouble(vec.substring(start,end));     //assignem el trosset de string (passat a double) a la posicio i
             start = end + 1;
         }
