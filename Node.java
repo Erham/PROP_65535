@@ -34,7 +34,6 @@ public class Node {
     public void negar() {
         tok.negar();
     }
-    
     public Token get_token() {
         return tok;
     } 
@@ -55,23 +54,21 @@ public class Node {
         right = d;
     }
     // considerar la versio booleana, que diu si s'ha pogut crear o no
-    
     public void imprimir() throws Exception {
         
         if (this.es_fulla()) {
-            if(this.tok.negat())        System.out.print('!');
+            if(this.tok.negat())        System.out.print("!");
             if (this.tok.es_operador()) System.out.print(this.tok.get_op());
             else                        System.out.print(this.tok.get_exp());
         }
         else {
-            if(this.tok.negat())        System.out.print('!');
-            System.out.print(" [");
+            if(this.tok.negat())        System.out.print("!");
+            System.out.print("[");
             this.left.imprimir();
             if (this.tok.es_operador()) System.out.print(this.tok.get_op());
             else                        System.out.print(this.tok.get_exp());
             this.right.imprimir();
-            System.out.print("] ");
+            System.out.print("]");
         }
-        
     }
 }

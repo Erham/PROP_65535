@@ -45,10 +45,24 @@ public class Paraula {
             new InputStreamReader(new FileInputStream(file),"ISO-8859-1"));
         String aux;
         while ((aux = b.readLine()) != null) {
-            if(p.equalsIgnoreCase(aux)) { 
+            if(p.equals(aux)) { 
                 return true;
             }
         }
         return false;
     }
+    
+    public static boolean comparar_2paraules(Paraula p1, Paraula p2) {
+        int size1, size2;
+        String s1, s2;
+        s1 = p1.get_p(); s2 = p2.get_p();
+        size1 = s1.length(); size2 = s2.length();
+        if (size1 != size2) return false;
+        else {
+            for (int i = 0; i < size1; i++) {
+                if (s1.charAt(i) != s2.charAt(i)) return false;
+            }
+        }
+        return true;
+    } 
 }

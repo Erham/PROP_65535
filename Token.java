@@ -30,13 +30,13 @@ public class Token {
     
     public char get_op() throws Exception {
         if (!e) return operador;
-        System.out.println("FAIL!!! Intent d'obtenir operador d'una expressio");
+        // System.out.println("FAIL!!! Intent d'obtenir operador d'una expressio");
         throw new Exception();
     }
     // retorna l'operador si ho es, altrament peta
     public String get_exp() throws Exception {
         if (e) return operand;
-        System.out.println("FAIL!!! Intent d'obtenir expressio d'un operador");
+        // System.out.println("FAIL!!! Intent d'obtenir expressio d'un operador");
         throw new Exception();
     }
     // retorna l'expressio si ho es, altrament peta
@@ -52,14 +52,10 @@ public class Token {
     public void imprimir() {
         if (negacio) System.out.print("#");
         if (e) {
-            //System.out.print("exp ");
             System.out.print(operand);
         }
         else {
-            //System.out.print("oper");
-            //System.out.print('[');
             System.out.print(operador);
-            //System.out.print(']');
         }
     }
 }

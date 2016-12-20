@@ -1,13 +1,11 @@
 package fitxers;
 
-import gestordocuments.Document;
 import gestordocuments.Frase;
+import gestordocuments.Paraula;
+import static gestordocuments.Paraula.comparar_2paraules;
 import gestordocuments.Text;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.Stack;
 
 // Expressio_booleana
@@ -24,54 +22,173 @@ public class Exp_bool {
     }
     //  assigna "expressio"
     
-    public ArrayList<Integer> documents_avaluar_expressio(ArrayList<Integer> coleccio) throws IOException {
+    public ArrayList<Integer> avaluar_exp(ArrayList<Integer> coleccio) throws Exception {
+        
+        verificar_parentesis();
+        redundancia_not();
+        calcular_tokens();
+        verificar_not();
+        verificar_correctesa();
+        crear_arbre();
+
+        return get_llista(coleccio);
+    }
+    
+    public ArrayList<Integer> get_llista(ArrayList<Integer> coleccio) throws IOException, Exception {
         ArrayList<Integer> documents_trobats = new ArrayList<>();
-        for (Integer id : coleccio) {   // per cada id (ergo document):
-            Fitxer ftx = new Fitxer();
-            ftx.set_nom(Integer.toString((int)id));   // li donem el nom
+
+        for (Integer id : coleccio) {   // ===== PER CADA ID DOCUMENT ===== (START)
+            Fitxer ftx = new Fitxer(Integer.toString((int)id));     // li donem el nom i el creem
             ftx.llegir();     // f ara conte el text del document
             String t = ftx.get_text();
-            Text text = new Text();     // ALERTA IMPORTS SABER PACKAGE
+            
+            t = t.replace(',',' ');
+            Text text = new Text();
             text.set_textstring(t);
+            
             text.dividir();
+            text.crear_divisions();
+            
             // text ara te la llista de frases
-            ArrayList<Frase> frases = new ArrayList<>();
-            frases = (ArrayList<Frase>) text.get_lf();
+            ArrayList<Frase> llista_frases = new ArrayList<>();
+            llista_frases = text.get_lf();
             // frases te la llista de frases del text;
+
+            llista_frases.remove(llista_frases.size()-1);
+            for (Frase frase : llista_frases) {
+                for (Paraula par : frase.get_lp()) {
+                }
+            }
             
             boolean match = false;
-            for (Frase f : frases) {    // iteracio per cada una de les frases del text
-                
-                
-                // if f.satisfa    match = true + break
+            for (Frase f : llista_frases) {    // iteracio per cada una de les frases del text
+
+                if (satisfa_expressio(f,arbre)) {
+                    match = true;
+                    break;
+                }
             }
             if (match) {
                 documents_trobats.add(id);  // si satisfa lexpressio, l'afegim a la llista
             }
-        }
+            
+        }   // ===== PER CADA ID DOCUMENT ===== (END)
+        
         return documents_trobats;
     }
     // coleccio: llista amb tots els ids dels documents
     
-    public boolean avaluar_expressio(Frase f) {
+    public boolean satisfa_expressio(Frase f, Node node) throws Exception {
+         
+        if (node.es_fulla()) {  // --- BASE ------------------------
+
+            if (node.get_token().es_expressio()) {  // sempre hauria de ser-ho
+                String exp = node.get_token().get_exp();
+                boolean ret;
+                switch (exp.charAt(0)) {
+                    case '{': {     // CONJUNT
+                        ret = satisfa_conjunt(exp, f.get_lp());
+                        break;
+                    }
+                    case '"': {     // SEQUENCIA
+                        ret = satisfa_sequencia(exp, f.get_lp());
+                        break;
+                    }
+                    default: {      // PARAULA
+                        ret = satisfa_paraula(exp, f.get_lp());
+                    }
+                }
+                if (node.get_token().negat()) return !ret;
+                else return ret;
+            }
+            else error();
+        }   // --- FI BASE ------------------------
         
+        else {  // --- RECURSIÓ ------------------------
+            
+            boolean left = satisfa_expressio(f, node.get_left());
+            
+            char op = 0;
+            if (node.get_token().es_operador()) {
+                
+                op = node.get_token().get_op();
+            }
+            else error();
+            
+            boolean right = satisfa_expressio(f, node.get_right());
+            
+            switch (op) {
+                case '&': {
+                    if (node.get_token().negat()) return !(left & right);
+                    else return (left & right);
+                }
+                case '|': {
+                    
+                    if (node.get_token().negat()) return !(left | right);
+                    else return (left | right);
+                }
+                default: error();
+            }
+            
+        }   // --- FI RECURSIÓ ------------------------
+        return false;
+        
+    }
+    
+    public boolean satisfa_conjunt(String conjunt, ArrayList<Paraula> llista_par) {
+        conjunt = conjunt.substring(1,conjunt.length()-1);    // extreu els { }
+        conjunt = " " + conjunt + " ";
+        
+        ArrayList<Paraula> paraules_conjunt = new ArrayList<>();
+        String aux = "";
+        for (int i = 0; i < conjunt.length(); i++) {
+            char c = conjunt.charAt(i);
+            if (c != ' ') {     // si no som en un espai:
+                aux = aux + c;
+            }
+            else if (aux != "") {paraules_conjunt.add(new Paraula(aux)); aux = "";}
+        }
+        
+        // paraules_conjunt te les paraules del conjunt 
+        
+        for (Paraula par1 : paraules_conjunt) {
+            // mirar si par1 es a llista_par
+            boolean c = false;
+            for (Paraula par2 : llista_par) {
+                
+                if (comparar_2paraules(par1,par2)) {
+                    c = true;
+                    break;
+                }
+            }
+            if (!c) return false;
+        }
+        return true;
+    }
+    public boolean satisfa_sequencia(String sequencia, ArrayList<Paraula> llista_par) {
+        sequencia = sequencia.substring(1,sequencia.length()-1);
+        Frase frase = new Frase();
+        for (Paraula p1 : llista_par) {
+            frase.afegir(p1);
+        }
+        String frase_string = frase.get_frasestring();
+        return frase_string.matches("(.*)"+ sequencia +"(.*)");
+    }
+    public boolean satisfa_paraula(String paraula, ArrayList<Paraula> llista_par) {
+        Paraula p1 = new Paraula(paraula);
+        for (Paraula p2 : llista_par) {
+            if (comparar_2paraules(p1,p2)) return true;
+        }
+        return false;
     }
     
     public boolean crear_arbre() throws Exception {
         Pair auxiliar = new Pair();
         auxiliar = crear_subarbre(0);
         arbre = auxiliar.tree;
-        
-        // debug
-        System.out.println(auxiliar.index + 1);
-        System.out.println(tokens.size());
-        // debug
-        
         return auxiliar.index + 1 == tokens.size();
     }
-    
     private Pair crear_subarbre(int j) throws Exception {
-        /**/ System.out.println("entro a crear_subarbre("+j+")"); /**/
         Stack<Node> ops = new Stack<>();
         Stack<Node> exps = new Stack<>();
         Pair ret = new Pair();
@@ -80,48 +197,33 @@ public class Exp_bool {
         int p_old;
         int size = tokens.size();
         for (int i = j; i < size; i++) {
-            /**/ System.out.println("entro al for (i = "+i+" )"); /**/
             Node act = new Node();
             Token token = tokens.get(i);
             act.set_token(token);       // ara act te el token actual
-            /**/ System.out.println("token["+i+"]"); /**/
             if (token.es_expressio()) {     // EXPRESSIO
-                /**/ System.out.println("token es expressio, push("+token.get_exp()+") a exps"); /**/
                 exps.push(act);
             }   // FI EXPRESSIO
             else {  // OPERADOR
-                /**/ System.out.println("token es operador, "+token.get_op()); /**/
                 p_new = prioritat(act);
-                /**/ System.out.println("p_new = "+p_new); /**/
                 if (p_new == 2) {   // parentesi
-                    /**/ System.out.println("token es un parentesi, push a ops"); /**/
                     ops.push(act);
                     Pair temp = new Pair();
                     temp = crear_subarbre(i + 1);
-                    /**/ System.out.println("fi de crear_subarbre("+(i+1)+")"); /**/
                     i = temp.index;
-                    /**/ System.out.println("i ara es "+i); /**/
                     if (ops.peek().get_token().negat()) {
                         temp.tree.negar();
                     }
                     exps.push(temp.tree);
-                    /**/ System.out.println("push(temp.tree) a exps"); /**/
                     ops.pop();
-                    /**/ System.out.println("token era un parentesi, pop de ops"); /**/
                 }
                 else if (ops.empty()) {
-                    /**/ System.out.println("ops es buit, push a ops"); /**/
                     ops.push(act);
                 }
                 else {  // no es parentesi i ops no es buit
-                    /**/ System.out.println("no es parentesi i ops no es buit"); /**/
                     p_old = prioritat(ops.peek());
-                    /**/ System.out.println("p_old = "+p_old); /**/
-                    if (p_new > p_old) {ops.push(act); /**/ System.out.println("p_new > p_old es cert, push a ops") /**/;}
-                    else {  // hem trobat un op amb menys o = prioritat que l'actual
-                        /**/ System.out.println("trobat un op amb menys o = prioritat que l'actual. p_new ="+p_new+"; p_old ="+p_old); /**/    
+                    if (p_new > p_old) {ops.push(act);}
+                    else {  // hem trobat un op amb menys o = prioritat que l'actual   
                         do {
-                            /**/ System.out.println("inici iteracio do"); /**/
                             Node arbre2 = new Node();
                             arbre2 = ops.peek(); ops.pop();
                             
@@ -131,7 +233,6 @@ public class Exp_bool {
                             
                             Node dret = new Node(); 
                             
-                            /**/ System.out.println("exps buida?: "+exps.empty()); /**/
                             if (!(exps.empty())) {
                                 dret = exps.peek(); exps.pop();
                             }
@@ -147,31 +248,24 @@ public class Exp_bool {
                             // l'arbre ja esta creat, ara cal afegir-lo a la pila exps
                             exps.push(arbre2);
                             if (!(ops.empty())) {
-                                /**/ System.out.println("ops no es buit"); /**/
                                 p_old = prioritat(ops.peek());
                             }
-                            /**/ System.out.println("fi iteracio do"); /**/
                         } while ( !(ops.empty() | p_new > p_old) );
-                        /**/ System.out.println("FI del do"); /**/
                         if (p_new == -1) {  // en acabar, segur que ops es buit, perque -1 es el minim
-                            /**/ System.out.println("p_new = "+p_new+", era )"); /**/
                             ret.index = i;
                             ret.tree = exps.peek();
                             return ret;
                         }
                         ops.push(act);
-                        /**/ System.out.println("push a ops"); /**/
                     }
                 }
             }   // FI OPERADOR
             j = i;
         }
-        /**/ System.out.println("fi del for, i ="+j); /**/
         ret.index = j;
         ret.tree = exps.peek();
         return ret;
     }
-    
     public Node element_anterior(Stack<Node> pila) throws Exception {
         if (!pila.empty()) {
             Node n1 = pila.peek();
@@ -222,24 +316,16 @@ public class Exp_bool {
         
         return true;
     }
-    
     public boolean verificar_correctesa() throws Exception {
         if (verificar_regles(0) == -42) return true;
         else return false;
     }
-    
     public int verificar_regles(int i) throws Exception {
         
         boolean just_op = false;
         boolean just_exp = false;
         for (; i < tokens.size(); i++) {
             Token t = tokens.get(i);    // t -> token[i] de la llista
-            
-            /* debug
-            System.out.print("proc token " + i + ": ");
-            t.imprimir();
-            System.out.println();
-            debug*/
             
             if (t.es_operador()) {
                 char op = t.get_op();
@@ -274,7 +360,6 @@ public class Exp_bool {
         return -42;  // si el for acaba, vol dir que l'expressio es correcta
     }
     // calcula la correctesa de les regles eoe (expressio - operador - expressio)
-    
     public boolean verificar_parentesis() {
         int par = 0;
         for (int i = 0; i < expressio.length(); i++) {
@@ -285,7 +370,6 @@ public class Exp_bool {
         return (par == 0);
     }
     // diu si l'expressio esta ben parentitzada
-    
     public boolean redundancia_not() {
         boolean ret = false;
         boolean just_not = false;
@@ -315,7 +399,6 @@ public class Exp_bool {
         return ret;
     }
     // extreu de "expressio" tots els "!!", i retorna cert en cas d'haver-ne extret algun
-    
     public void calcular_tokens() throws Exception {
         expressio = "(" + expressio + ")";  // tancament (...) inicial
         afegir_operador('(');
@@ -323,7 +406,6 @@ public class Exp_bool {
         if (n != (expressio.length()-1)) error();
         
     }
-    
     public int tokenitzar(int i) throws Exception {
         int size = expressio.length();
         int tipus;
@@ -368,18 +450,14 @@ public class Exp_bool {
         return 0;   
     }
     // es crida a dins un parentesi
-    
     private static int tipus_op(char c) {
         if ( (c == '&') | (c == '|') | (c == '!') | (c == '(') | (c == ')') ) return 0;
         if ( (c == '{') | (c == '}') | (c == '"') ) return 1;
         else return 2;
-         
-        // if ( ((c >= 'a')&(c <= 'z')) | ((c >= 'A')&(c <= 'Z')) ) return false;  // fals si es una lletra SIMPLE
     }
     // retorn : 0 -> operador
     //          1 -> inici / fi expressio
     //          2 -> lletres i altres
-    
     private int tractar_parentesi(int i) throws Exception /* "i" es l'index de partida */ {
         i++;
         int size = expressio.length();
@@ -416,7 +494,7 @@ public class Exp_bool {
             }
             i++;
         }
-        System.out.println("Error a tractar_conjunt()");
+        //System.out.println("Error a tractar_conjunt()");
         error();
         return 0;
     }
@@ -446,7 +524,7 @@ public class Exp_bool {
             }
             i++;
         }
-        System.out.println("Error a tractar_sequencia()");
+        //System.out.println("Error a tractar_sequencia()");
         error();
         return 0;
     }
@@ -465,7 +543,7 @@ public class Exp_bool {
             }
             i++;
         }
-        System.out.println("Error a tractar_paraula()");
+        //System.out.println("Error a tractar_paraula()");
         error();
         return 0;
     }
@@ -485,7 +563,6 @@ public class Exp_bool {
         tokens.add(t);
     }
     // afegeix l'operador "op" a la llista "tokens"
-
     public void imprimir_tokens() {
         for (Token tok : tokens) {
             // obtenim una entrada de la llista
@@ -494,12 +571,10 @@ public class Exp_bool {
         }
         System.out.println();
     }
-    
     public void error() throws Exception {
         throw new Exception();
     }
     // fa "petar" l'execucio degut a un error
-    
     public static int prioritat(Node n) throws Exception {
         char c = n.get_token().get_op();
         switch (c) {
@@ -512,310 +587,3 @@ public class Exp_bool {
     }
     // retorna la prioritat numèrica pels 4 possibles operadors (n ha de ser node d'operador)
 }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /*
-    private int size;           //
-    private String expressio;   // l'string de l'expressio
-    public Node arbre;
-    
-    private int i;
-    
-    
-    public Exp_bool() {
-        size = 0;
-        expressio = null;
-        i = 0;
-        arbre = null;
-    }
-    
-    public Exp_bool(String E) {
-        expressio = E;
-        size = E.length();
-        i = 0;
-        arbre = new Node();
-    }
-    //  crea , afegeix l'expressio i inicialitza l'arbre
-    
-    public Node generar() throws Exception {
-        Node ret = new Node();
-        Node N = ret;
-        Node pare = null;
-        boolean obert = true;
-        boolean just_not = false;
-        char c;
-        
-        while (i < size) {  // bucle principal
-            
-            c = expressio.charAt(i);
-            switch (c) {
-                case '&': {
-                    if (N.es_buit()) {  // si N es buit, no som en un final d'expr
-                        if (N.fe() == null) error();
-                        else if (N.fe().es_buit()) error();
-                        N.set_and();
-                        pare = N;
-                        N.crear_fill_d();   // crear dret
-                        N = N.fd();         // assignarlo a N
-                    }
-                    else {  // acabem de sortir d'una exp (sigui la que sigui, parentesi o cjt, seq...)
-                        if (N.get_op() == '&') {
-                            
-                            Node a = new Node();
-                            a.crear_fill_e();
-                            a.e = N;
-                            N = a;
-                            N.set_and();
-                            pare = N;
-                            N.crear_fill_d();
-                            N = N.fd();
-                            
-                        }
-                        else if (N.get_op() == '|') {
-                            
-                            Node a = new Node();
-                            a.crear_fill_e();
-                            a.e = N.d;
-                            N.d = a;
-                            N = a;
-                            N.set_and();
-                            pare = N;
-                            N.crear_fill_d();
-                            N = N.fd();
-                            
-                        }
-                        else error();
-                    }
-                }
-                case '|': {
-                    if (N.es_buit()) {
-                        if (N.fe() == null) error();
-                        else if (N.fe().es_buit()) error();
-                        N.set_or();
-                        pare = N;
-                        N.crear_fill_d();
-                        N = N.fd();
-                    }
-                    else {
-                        
-                        Node a = new Node();
-                        a.crear_fill_e();
-                        a.e = N;
-                        N = a;
-                        N.set_or();
-                        pare = N;
-                        N.crear_fill_d();
-                        N = N.fd();
-                        
-                    }
-                }
-                case '!': {
-                    
-                    if (N.fe() != null) error();
-                    else if ( (pare.get_op() == 'e') | (pare.get_op() == 'n' ) ) error();
-                    N.negar();
-                    pare = N;
-                    N.crear_fill_d();
-                    N = N.fd();
-                    
-                        
-                        
-
-                }
-                case '(': {
-                    if (N.fe() != null) error();
-                    if (pare != null) {
-                            if ( (pare.get_op() == 'e') | (pare.get_op() == 'n') ) error();
-                    }
-                    // ara ja podem cridar la "recursio"
-                    i++;
-                    N = generar();
-                    // aqui hem acabat un parentesi, un possible final d'expressio
-                    // per tant no podem assignar cap fill a aquest N (!!!)
-                    // ni fer pare = N; (el pare segueix sent el mateix si no fem cap fill !!! )
-                    
-                }
-                case '{': {
-                    
-                }
-                case '"': {
-                    
-                }
-                case '': {
-                    
-                }
-            }
-            i++;    
-        }
-        
-        return ret;
-    }
-    // genera un arbre fins que es troba amb ')', i el retorna
-    // si en trobar ')' no ha acabat amb "expressio", després haurà de PETAR
-    
-    public int 
-    
-    
-   
-    
-
- end = doc.indexOf(' ', start);  // posició del següent espai
-                if (end >=0) {
-                    paraula = doc.substring(start, end);
-
- this.text = (this.text).concat(to_add);
-
-char charAt(int index)
-
-string.indexOf(char c) -> comença per defecte a string[0]
-string.indexOf(char c, int index) -> comença a string[index] INCLÒS (!)
-
-
-Scanner in = new Scanner(System.in);
-    String o1;
-
-o1 = in.nextLine();
-
-
-    
-    
-    
-    
-
-    
-  
- private int size;       // mida del String "exp"
-    private String exp;     // conte l'expressio
-    
-    
-    Expressio_booleana() {}
-    
-    Expressio_booleana(String expressio) {
-        exp = expressio;
-        size = expressio.length();
-    }
-    
-    public void set_expressio(String expressio) {
-        exp = expressio;
-    }
-    public int get_size() {
-        return size;
-    }
-    
-    
-    public void analitzar() {
-        
-    }
-    
-    private int parentesi(int i) throws Exception {
-        char c;
-        boolean buit = true;
-        boolean op_anterior = false;
-        boolean not_anterior = false;
-        boolean exp_anterior = false;
-        // "i" ha de contenir l'index des del qual comencem a iterar
-        
-        while (i < size) {
-            c = exp.charAt(i);  // "c" es igual al caracter on som [i]
-            
-            if (c == '(') {     // nou parentesi
-                if (exp_anterior) throw new Exception();    // Si veniem d'una EXPRESSIO, avorta
-                i++;
-                buit = false;
-                i = this.parentesi(i);
-                op_anterior = false;
-                not_anterior = false;
-                exp_anterior = true;
-            }
-            else if (c == ')') {    // acabem el parentesi
-                if (buit) throw new Exception();
-                return i + 1;
-            }
-            else if (c == '{') {    // nou conjunt
-                if (exp_anterior) throw new Exception();    // Si veniem d'una EXPRESSIO, avorta
-                i++;
-                buit = false;
-                i = this.conjunt_par(i);
-                op_anterior = false;
-                not_anterior = false;
-                exp_anterior = true;
-            }
-            else if (c == '"') {    // nova sequencia
-                if (exp_anterior) throw new Exception();    // Si veniem d'una EXPRESSIO, avorta
-                i++;
-                buit = false;
-                i = this.sequencia_par(i);
-                op_anterior = false;
-                not_anterior = false;
-                exp_anterior = true;
-            }
-            else if (c == '!') {    // NOT
-                if (exp_anterior) throw new Exception();    // Si veniem d'una EXPRESSIO, avorta
-                i++;
-                buit = false;
-                op_anterior = false;
-                not_anterior = true;
-                exp_anterior = false;
-            }
-            else if (c == '&' | c == '|') {    // AND i OR
-                if (op_anterior | not_anterior) throw new Exception();
-                if (!exp_anterior) throw new Exception();
-                i++;
-                op_anterior = true;
-                not_anterior = false;
-                exp_anterior = false;
-            }
-            else if (c == ' ') {
-                i++;
-            }
-            else if (c >= 'a' & c <= 'z') {     // Si "c" es una lletra minuscula:
-                i++;
-                buit = false;
-                i = this.paraula(i);
-                op_anterior = false;
-                not_anterior = false;
-                exp_anterior = true;
-            }
-        }
-        System.out.print("No hauriem d'haver arribat fins aqui... :|");
-        throw new Exception();  // Si arribem aqui es mala senyal...
-    }
-    
-    private int conjunt_par(int i) {
-        
-        return 0;
-    }
-    
-    private int sequencia_par(int i) {
-        
-        return 0;
-    }
-    
-    private int paraula(int i) {
-        
-        return 0;
-    }
-    
-    */
