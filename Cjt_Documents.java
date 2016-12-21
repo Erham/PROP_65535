@@ -12,6 +12,7 @@ import java.util.Set;
 import fitxers.Comparador;
 import fitxers.Espai_vectorial;
 import fitxers.Fitxer;
+import fitxers.Registre;
 import fitxers.Vector;
 import java.io.BufferedReader;
 import java.io.File;
@@ -21,6 +22,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
 /**
@@ -41,6 +45,7 @@ public class Cjt_Documents {
     3) El conjunt és buit.
     4) Comanda incorrecta.
     */
+    
     
     public ArrayList<Integer> get_all_ids() {
         ArrayList<Integer> al = new ArrayList();
@@ -293,99 +298,113 @@ public class Cjt_Documents {
         return texto;
     }
     
-    public void cerca_Semblants(Document d, int k, int answer) throws IOException {
-        int num = answer;
-        switch (num) {
-            case 1:
-                Comparador c = new Comparador();
-                Espai_vectorial ev = new Espai_vectorial();
-                ev.set_dimensio(20);
-                String s = d.get_contingut().netejear();
-                
-                c.assignar_vector_boolea(ev, s);
-                Map<String, Double> suu = new TreeMap();
-                for(int i = 0; i < max_id; ++i) {
-                    double dist;
-                    Vector vd = new Vector();
-                    if(cjt.get(i) != null) {
-                        String str = cjt.get(i).get_contingut().netejear();
-                        vd.omplir_vector(str);
-                        
-                        dist = c.distancia_boolea(vd);
-                        String s2 = String.valueOf(i);
-                        suu.put(s2, dist);
-                    }
-                }
-                int temp = 0;
-                for(Map.Entry<String, Double> entry : suu.entrySet()) {
-                    if(temp < k) {
-                        cjt.get(Integer.parseInt(entry.getKey()));
-                        ++temp;
-                    }
-                }
-                break;
-            case 2:
-                Comparador ce = new Comparador();
-                Espai_vectorial evec = new Espai_vectorial();
-                String si = d.get_contingut().netejear();
-                
-                ce.assignar_vector_boolea(evec, si);
-                Map<String, Double> suuu = new TreeMap();
-                for(int i = 0; i < max_id; ++i) {
-                    double dist;
-                    Vector vd = new Vector();
-                    if(cjt.get(i) != null) {
-                        String str = cjt.get(i).get_contingut().netejear();
-                        vd.omplir_vector(str);
-                        
-                        dist = ce.cosinus_boolea(vd);
-                        String s2 = String.valueOf(i);
-                        suuu.put(s2, dist);
-                    }
-                }
-                int tempo = 0;
-                for(Map.Entry<String, Double> entry : suuu.entrySet()) {
-                    if(tempo < k) {
-                        cjt.get(Integer.parseInt(entry.getKey()));
-                        ++tempo;
-                    }
-                }
-                
-                break;
-            case 3:
-                
-                Comparador comp = new Comparador();
-                Espai_vectorial evee = new Espai_vectorial();
-                String str2 = d.get_contingut().netejear();
-                
-                comp.assignar_vector_boolea(evee, str2);
-                Map<String, Double> suuuu = new TreeMap();
-                for(int i = 0; i < max_id; ++i) {
-                    double dist;
-                    Vector vd = new Vector();
-                    if(cjt.get(i) != null) {
-                        String str = cjt.get(i).get_contingut().netejear();
-                        vd.omplir_vector(str);
-                        
-                        dist = comp.distancia_enter(vd);
-                        String s2 = String.valueOf(i);
-                        suuuu.put(s2, dist);
-                    }
-                }
-                int tem = 0;
-                for(Map.Entry<String, Double> entry : suuuu.entrySet()) {
-                    if(tem < k) {
-                        cjt.get(Integer.parseInt(entry.getKey()));
-                        ++tem;
-                    }
-                }
-                break;
-            default: hay_error = 4;
-                break;
+    // mode : 1 -> distancia boolea. 2 -> cosinus boolea. 3 -> distancia enters
+    public ArrayList<Integer> cerca_Semblants(int id, int num_docs, int mode) throws IOException, Exception {
+        
+        ArrayList<Map.Entry<Integer, Double>> docs = new ArrayList<>(); docs.clear();
+        ArrayList<Integer> docs_int = new ArrayList<>(); docs_int.clear();
+        
+        Comparator<Map.Entry<Integer,Double>> comparador_llista = Map.Entry.<Integer, Double>comparingByValue();
+        
+        Map<Integer, Double> distancies = new HashMap();
+        
+        //ArrayList<Map.Entry<Integer,Double>> distancies = new ArrayList<>();
+        
+        Comparador comp = new Comparador();
+        Espai_vectorial e_vec = new Espai_vectorial();
+        e_vec.set_dimensio(500);
+        e_vec.omplir_map();
+        e_vec.omplir_list();
+        
+        // donem nom al fitxer i creem l'objecte
+        
+        Fitxer fitxer = new Fitxer(Integer.toString((int)id));
+        fitxer.llegir();
+        String text = fitxer.get_text();
+        
+        Text t = new Text();
+        t.set_textstring(text);
+        t.dividir();
+        t.crear_divisions();
+        
+        text = t.netejear();
+
+        System.out.println("12");
+        
+        Vector vector;
+        
+        if (mode == 3) {
+            vector = e_vec.vector_enter(text);
+        }
+        else vector = e_vec.vector_boolea(text);
+        
+        /* debug
+        double[] elem = vector.get_elements();
+        for (double num : elem) {
+            System.out.println("- " + num + " -");
+        }
+        debug */
+        
+        
+        if (mode != 3) comp.assignar_vector_boolea(e_vec, text);
+        else comp.assignar_vector_enter(e_vec, text);
+        
+        for (int i = 0; i < max_id; i++) {
+            if (i != id) {
+                if(cjt.get(i) != null) {
+                    Fitxer f1 = new Fitxer(Integer.toString((int)i));
+                    f1.llegir();
+                    String text1 = f1.get_text();
+                    Text t1 = new Text();
+                    t1.set_textstring(text1);
+                    t1.dividir();
+                    t1.crear_divisions();
+
+                    text1 = t1.netejear();
+                    Vector v1;
+                    if (mode != 3) v1 = e_vec.vector_boolea(text1);
+                    else v1 = e_vec.vector_enter(text1);
+
+                    Double d1;
+                        switch (mode) {
+                            case 1: d1 = comp.distancia_boolea(v1); break;
+                            case 2: d1 = comp.cosinus_boolea(v1);   break;
+                            case 3: d1 = comp.distancia_enter(v1);  break;
+                            default: hay_error = 4; throw new Exception();
+                        }
+                    Integer in = (Integer) i;
+                    distancies.putIfAbsent(in, d1);
+                } 
+            }
+            
+            System.out.println(i);
+            
         }
         
-        hay_error = 0;
+        
+        for (Map.Entry<Integer,Double> entry : distancies.entrySet()) {
+            docs.add(entry);
+        }
+        
+        Collections.sort(docs,comparador_llista);
+        
+        int count = 0;
+        
+        for (Map.Entry<Integer, Double> entry : docs) {
+            if (count < num_docs) {
+                
+                docs_int.add(entry.getKey());
+                
+                System.out.println(entry.getValue());
+                
+            }
+            else break;
+            count++;
+        }
+        
+        return docs_int;
     }
+            
     
     public boolean existeix(Document d) {
         boolean existeix = false;
@@ -693,5 +712,43 @@ public class Cjt_Documents {
         }
         
         return valor;
+    }
+    
+    
+    public ArrayList<Integer> obtenir_documents_semblants(int id, int num_docs, int mode) throws IOException, Exception {
+        Registre r = new Registre();
+        String registre_docs = r.get_text();
+        
+        Cjt_Documents CONJ = new Cjt_Documents();
+        CONJ.omplir_cjt(registre_docs);
+
+        return CONJ.cerca_Semblants(id, num_docs, mode);
+        
+        /*
+        
+        utilització:
+        ===========
+        id -> id del document a comparar amb tots els altres
+        num_docs -> numero de documents a trobar
+        mode ->  1 per distancia en booleans
+                 2 per cosinus en booleans
+                 3 per distancia amb enters
+        
+        el ArrayList<Integer> que retorna conté els identificadors dels num_docs documents més semblants al document passat
+        
+        crida:
+        =====
+        
+        Registre r = new Registre();
+        String registre_docs = r.get_text();
+        
+        Cjt_Documents CONJ = new Cjt_Documents();
+        CONJ.omplir_cjt(registre_docs);
+        
+        ArrayList<Integer> array = CONJ.obtenir_documents_semblants(id,num_docs,mode);
+        
+        
+        */
+        
     }
 }
